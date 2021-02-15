@@ -187,9 +187,45 @@
                         <a href="#" data-role="directory">
                             <i class="fa fa-folder"></i>
                             &nbsp;
+                            python
+                        </a>
+                         <ul class="unstyled" id="tree" > 
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            django
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2021/02/14/python-django-%E6%96%B0%E5%BB%BA%E9%A1%B9%E7%9B%AE/">新建项目</a></li>  <li class="file"><a href="/2021/02/15/Python-Django-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/">文件上传</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            socket
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2021/02/15/Python-Socket-UDP/">UDP</a></li>  </ul> 
+                    </li> 
+                     </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
                             学习探讨
                         </a>
                          <ul class="unstyled" id="tree" >  <li class="file"><a href="/2021/02/13/%E6%B5%85%E8%B0%88%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E7%9A%84%E5%AD%A6%E4%B9%A0%E6%96%B9%E5%BC%8F/">浅谈自顶向下的学习方式</a></li>  <li class="file"><a href="/2021/02/13/%E5%85%B3%E4%BA%8EJava%E5%BC%80%E5%8F%91%E3%80%81%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%BC%8F%E3%80%81%E4%B8%8E%E8%87%AA%E5%88%B6%E5%8A%9B/">关于Java开发、学习模式、与自制力</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
+                            程序
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2021/02/13/PDF%E6%89%AB%E6%8F%8F%E4%B9%A6%E7%B1%8D%E5%AF%B9%E6%AF%94%E5%BA%A6%E6%8F%90%E9%AB%98%E7%A8%8B%E5%BA%8F/">PDF扫描书籍对比度提高程序</a></li>  </ul> 
                     </li> 
                     
                     <li class="directory">
@@ -200,7 +236,7 @@
                         </a>
                          <ul class="unstyled" id="tree" >  <li class="file"><a href="/2021/02/13/hello-world/">Hexo</a></li>  </ul> 
                     </li> 
-                     <li class="file"><a href="/2021/02/13/PDF%E6%89%AB%E6%8F%8F%E4%B9%A6%E7%B1%8D%E5%AF%B9%E6%AF%94%E5%BA%A6%E6%8F%90%E9%AB%98%E7%A8%8B%E5%BA%8F/">PDF扫描书籍对比度提高程序</a></li>  </ul> 
+                     </ul> 
     </div>
     <script>
         $(document).ready(function() {
@@ -272,6 +308,288 @@
 </aside>
             
             <section id="main">
+        <article id="post-Python-Django-文件上传" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python/">python</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/python/django/">django</a>
+    </div>
+
+                        
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2021/02/15/Python-Django-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/">
+            <time datetime="2021-02-15T12:58:39.000Z" itemprop="datePublished">2021-02-15</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/raw/writing/source/_posts/Python-Django-文件上传.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/edit/writing/source/_posts/Python-Django-文件上传.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/commits/writing/source/_posts/Python-Django-文件上传.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2021/02/15/Python-Django-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/">文件上传</a>
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                
+                    
+                    <p><h2 id="1-使用Post请求"><a href="#1-使用Post请求" class="headerlink" title="1.使用Post请求"></a>1.使用Post请求</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">import requests</span><br><span class="line">url&#x3D;&quot;http:&#x2F;&#x2F;127.0.0.1:8000&#x2F;detectImg&#x2F;&quot;</span><br><span class="line">files&#x3D;&#123;&quot;pic&quot;:open(&quot;C:\\Users\\LIF\\Pictures\\123.png&quot;,&quot;rb&quot;)&#125;</span><br><span class="line">res&#x3D;requests.post(url,files&#x3D;files)</span><br></pre></td></tr></table></figure>
+<p>requests.post  数据使用data字典，文件使用files字典，open以binary</p>
+<h2 id="2-使用request-FILES"><a href="#2-使用request-FILES" class="headerlink" title="2.使用request.FILES"></a>2.使用request.FILES</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">@csrf_exempt</span><br><span class="line">def example(request):</span><br><span class="line">    pic &#x3D; request.FILES.get(&quot;pic&quot;)</span><br><span class="line">    fileName&#x3D;str(pic)</span><br><span class="line">    save_path &#x3D; &quot;E:\\AI\\智能导盲眼镜\\tensorflow-yolov4-tflite-master\\&quot;+fileName</span><br><span class="line">    with open(save_path, &#39;wb&#39;) as f:</span><br><span class="line">     for content in pic.chunks():</span><br><span class="line">         f.write(content)</span><br></pre></td></tr></table></figure>
+<p>注意以wb打开保存路径(文件会自动创建，类比w)，为防止一次写入的问题，以 for i in file.chunks(): 进行写入</p>
+<p>不知道为什么在 <strong>request.FILES.get(“pic”)</strong> 重新打了以下就好了</p>
+<p>
+                
+            
+        
+        
+            </div>   
+            <div class="article-more-link">
+                <a href="/2021/02/15/Python-Django-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/#more">查看更多</a>
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+
+
+
+
+    
+        <article id="post-Python-Socket-UDP" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python/">python</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/python/socket/">socket</a>
+    </div>
+
+                        
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2021/02/15/Python-Socket-UDP/">
+            <time datetime="2021-02-15T12:57:58.000Z" itemprop="datePublished">2021-02-15</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/raw/writing/source/_posts/Python-Socket-UDP.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/edit/writing/source/_posts/Python-Socket-UDP.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/commits/writing/source/_posts/Python-Socket-UDP.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2021/02/15/Python-Socket-UDP/">UDP</a>
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                
+                    
+                    <p><h2 id="0-函数"><a href="#0-函数" class="headerlink" title="0.函数"></a>0.函数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">skt &#x3D; socket.socket(socket.AF_INET,socket.SOCK_DGRAM)</span><br></pre></td></tr></table></figure>
+<p>建立sockekUDP客户端和服务端</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Socket.bind((&#39;127.0.0.1&#39;,9090))</span><br></pre></td></tr></table></figure>
+<p>服务端绑定</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data,addr &#x3D; skt.recvfrom(1024)</span><br></pre></td></tr></table></figure>
+<p>
+                
+            
+        
+        
+            </div>   
+            <div class="article-more-link">
+                <a href="/2021/02/15/Python-Socket-UDP/#more">查看更多</a>
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+
+
+
+
+    
+        <article id="post-python-django-新建项目" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/python/">python</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/python/django/">django</a>
+    </div>
+
+                        
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2021/02/14/python-django-%E6%96%B0%E5%BB%BA%E9%A1%B9%E7%9B%AE/">
+            <time datetime="2021-02-14T13:25:25.000Z" itemprop="datePublished">2021-02-14</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/raw/writing/source/_posts/python-django-新建项目.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/edit/writing/source/_posts/python-django-新建项目.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/commits/writing/source/_posts/python-django-新建项目.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2021/02/14/python-django-%E6%96%B0%E5%BB%BA%E9%A1%B9%E7%9B%AE/">新建项目</a>
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+            
+        
+        
+            <h2 id="新建APP"><a href="#新建APP" class="headerlink" title="新建APP"></a>新建APP</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python manage.py startapp AppName</span><br></pre></td></tr></table></figure>
+<p>在Config加入 App</p>
+
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+
+
+
+
+    
         <article id="post-PDF扫描书籍对比度提高程序" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -280,6 +598,11 @@
                 
                     <div class="article-meta">
                         
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/%E7%A8%8B%E5%BA%8F/">程序</a>
+    </div>
+
                         
                         
     <div class="article-date">

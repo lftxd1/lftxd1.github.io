@@ -3,21 +3,21 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Hexo | 缒寻</title>
+    <title>UDP | 缒寻</title>
     
     
-        <meta name="keywords" content="Hexo" />
+        <meta name="keywords" content="UDP" />
     
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.">
+    <meta name="description" content="0.函数1skt &#x3D; socket.socket(socket.AF_INET,socket.SOCK_DGRAM) 建立sockekUDP客户端和服务端 1Socket.bind((&#39;127.0.0.1&#39;,9090)) 服务端绑定 1data,addr &#x3D; skt.recvfrom(1024) 阻塞监听，接受一个Bytes和元组 1Str.encode(Byt">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="https://lftxd1.github.io/2021/02/13/hello-world/index.html">
+<meta property="og:title" content="UDP">
+<meta property="og:url" content="https://lftxd1.github.io/2021/02/15/Python-Socket-UDP/index.html">
 <meta property="og:site_name" content="缒寻">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.">
+<meta property="og:description" content="0.函数1skt &#x3D; socket.socket(socket.AF_INET,socket.SOCK_DGRAM) 建立sockekUDP客户端和服务端 1Socket.bind((&#39;127.0.0.1&#39;,9090)) 服务端绑定 1data,addr &#x3D; skt.recvfrom(1024) 阻塞监听，接受一个Bytes和元组 1Str.encode(Byt">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-02-13T06:12:39.785Z">
-<meta property="article:modified_time" content="2021-02-13T10:56:40.339Z">
+<meta property="article:published_time" content="2021-02-15T12:57:58.000Z">
+<meta property="article:modified_time" content="2021-02-15T13:24:39.583Z">
 <meta property="article:author" content="历风">
 <meta name="twitter:card" content="summary">
     
@@ -187,9 +187,9 @@
                          <ul class="unstyled" id="tree" >  <li class="file"><a href="/2021/02/13/OpenCV%E6%89%AB%E6%8F%8F%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">OpenCV扫描图像处理程序</a></li>  </ul> 
                     </li> 
                     
-                    <li class="directory">
+                    <li class="directory open">
                         <a href="#" data-role="directory">
-                            <i class="fa fa-folder"></i>
+                            <i class="fa fa-folder-open"></i>
                             &nbsp;
                             python
                         </a>
@@ -203,13 +203,13 @@
                          <ul class="unstyled" id="tree" >  <li class="file"><a href="/2021/02/14/python-django-%E6%96%B0%E5%BB%BA%E9%A1%B9%E7%9B%AE/">新建项目</a></li>  <li class="file"><a href="/2021/02/15/Python-Django-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/">文件上传</a></li>  </ul> 
                     </li> 
                     
-                    <li class="directory">
+                    <li class="directory open">
                         <a href="#" data-role="directory">
-                            <i class="fa fa-folder"></i>
+                            <i class="fa fa-folder-open"></i>
                             &nbsp;
                             socket
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2021/02/15/Python-Socket-UDP/">UDP</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/2021/02/15/Python-Socket-UDP/">UDP</a></li>  </ul> 
                     </li> 
                      </ul> 
                     </li> 
@@ -232,13 +232,13 @@
                          <ul class="unstyled" id="tree" >  <li class="file"><a href="/2021/02/13/PDF%E6%89%AB%E6%8F%8F%E4%B9%A6%E7%B1%8D%E5%AF%B9%E6%AF%94%E5%BA%A6%E6%8F%90%E9%AB%98%E7%A8%8B%E5%BA%8F/">PDF扫描书籍对比度提高程序</a></li>  </ul> 
                     </li> 
                     
-                    <li class="directory open">
+                    <li class="directory">
                         <a href="#" data-role="directory">
-                            <i class="fa fa-folder-open"></i>
+                            <i class="fa fa-folder"></i>
                             &nbsp;
                             部署教程
                         </a>
-                         <ul class="unstyled" id="tree" >  <li class="file active"><a href="/2021/02/13/hello-world/">Hexo</a></li>  </ul> 
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2021/02/13/hello-world/">Hexo</a></li>  </ul> 
                     </li> 
                      </ul> 
     </div>
@@ -311,7 +311,7 @@
     <div id="toTop" class="fa fa-angle-up"></div>
 </aside>
             
-            <section id="main"><article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+            <section id="main"><article id="post-Python-Socket-UDP" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
         
@@ -321,15 +321,15 @@
                         
     <div class="article-category">
     	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/%E9%83%A8%E7%BD%B2%E6%95%99%E7%A8%8B/">部署教程</a>
+        <a class="article-category-link" href="/categories/python/">python</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/python/socket/">socket</a>
     </div>
 
                         
                         
     <div class="article-date">
         <i class="fa fa-calendar"></i>
-        <a href="/2021/02/13/hello-world/">
-            <time datetime="2021-02-13T06:12:39.785Z" itemprop="datePublished">2021-02-13</time>
+        <a href="/2021/02/15/Python-Socket-UDP/">
+            <time datetime="2021-02-15T12:57:58.000Z" itemprop="datePublished">2021-02-15</time>
         </a>
     </div>
 
@@ -340,13 +340,13 @@
                         
                         
                             <div class="article-meta-button">
-                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/raw/writing/source/_posts/hello-world.md'> Source </a>
+                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/raw/writing/source/_posts/Python-Socket-UDP.md'> Source </a>
                             </div>
                             <div class="article-meta-button">
-                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/edit/writing/source/_posts/hello-world.md'> Edit </a>
+                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/edit/writing/source/_posts/Python-Socket-UDP.md'> Edit </a>
                             </div>
                             <div class="article-meta-button">
-                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/commits/writing/source/_posts/hello-world.md'> History </a>
+                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/commits/writing/source/_posts/Python-Socket-UDP.md'> History </a>
                             </div>
                         
                     </div>
@@ -354,7 +354,7 @@
                 
     
         <h1 class="article-title" itemprop="name">
-            Hexo
+            UDP
         </h1>
     
 
@@ -367,17 +367,18 @@
             
         
         
-            <p>Welcome to <a target="_blank" rel="noopener" href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a target="_blank" rel="noopener" href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a target="_blank" rel="noopener" href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<a id="more"></a>
-
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+            <h2 id="0-函数"><a href="#0-函数" class="headerlink" title="0.函数"></a>0.函数</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">skt &#x3D; socket.socket(socket.AF_INET,socket.SOCK_DGRAM)</span><br></pre></td></tr></table></figure>
+<p>建立sockekUDP客户端和服务端</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Socket.bind((&#39;127.0.0.1&#39;,9090))</span><br></pre></td></tr></table></figure>
+<p>服务端绑定</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">data,addr &#x3D; skt.recvfrom(1024)</span><br></pre></td></tr></table></figure>
+<p>阻塞监听，接受一个Bytes和元组</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Str.encode(Bytes)</span><br></pre></td></tr></table></figure>
+<p>Str translate Bytes</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bytes.decode(rst)</span><br></pre></td></tr></table></figure>
+<p>Bytes translate Str</p>
+<h2 id="1-服务端"><a href="#1-服务端" class="headerlink" title="1.服务端"></a>1.服务端</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">import socket</span><br><span class="line">skt &#x3D; socket.socket(socket.AF_INET,socket.SOCK_DGRAM)</span><br><span class="line">skt.bind((&#39;127.0.0.1&#39;,9090))</span><br><span class="line"></span><br><span class="line">while True:</span><br><span class="line"></span><br><span class="line">    data,addr &#x3D; skt.recvfrom(1024)</span><br><span class="line">    print(bytes.decode(data)+&quot;123&quot;)</span><br><span class="line">    #接受成功回复消息</span><br><span class="line">    rst &#x3D; b&#39;I am fine&#39;</span><br><span class="line">    skt.sendto(rst,addr)</span><br><span class="line">    </span><br><span class="line">    #关闭链接</span><br><span class="line">skt.close()</span><br></pre></td></tr></table></figure>
+<h2 id="2-客户端"><a href="#2-客户端" class="headerlink" title="2.客户端"></a>2.客户端</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">#导入模块</span><br><span class="line">import socket</span><br><span class="line">import time</span><br><span class="line">#创建socket</span><br><span class="line">skt  &#x3D; socket.socket(socket.AF_INET,socket.SOCK_DGRAM)</span><br><span class="line">#创建发送消息和发送目标</span><br><span class="line">msg &#x3D; b&#39;Hello world&#39;</span><br><span class="line">addr &#x3D; (&#39;127.0.0.1&#39;,9090)</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">skt.sendto(msg,addr)</span><br><span class="line">#接受回复</span><br><span class="line"></span><br><span class="line">rst,addr &#x3D; skt.recvfrom(1024) # rst:Bytes;addr:元组</span><br><span class="line">print(bytes.decode(rst)+&quot;123&quot;)</span><br><span class="line">#print(&#39;client done&#39;)</span><br><span class="line">#time.sleep(1)</span><br><span class="line">#关闭链接</span><br><span class="line">wati&#x3D;input()</span><br><span class="line">skt.close()</span><br></pre></td></tr></table></figure>
 
             </div>
         
@@ -390,15 +391,20 @@
     
 <nav id="article-nav">
     
-        <a href="/2021/02/13/%E6%B5%85%E8%B0%88%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E7%9A%84%E5%AD%A6%E4%B9%A0%E6%96%B9%E5%BC%8F/" id="article-nav-newer" class="article-nav-link-wrap">
+        <a href="/2021/02/15/Python-Django-%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" id="article-nav-newer" class="article-nav-link-wrap">
             <strong class="article-nav-caption">上一篇</strong>
             <div class="article-nav-title">
                 
-                    浅谈自顶向下的学习方式
+                    文件上传
                 
             </div>
         </a>
     
+    
+        <a href="/2021/02/14/python-django-%E6%96%B0%E5%BB%BA%E9%A1%B9%E7%9B%AE/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">下一篇</strong>
+            <div class="article-nav-title">新建项目</div>
+        </a>
     
 </nav>
 
