@@ -230,6 +230,15 @@
                         <a href="#" data-role="directory">
                             <i class="fa fa-folder"></i>
                             &nbsp;
+                            Requests
+                        </a>
+                         <ul class="unstyled" id="tree" >  <li class="file"><a href="/2021/02/18/requests/">requests</a></li>  </ul> 
+                    </li> 
+                    
+                    <li class="directory">
+                        <a href="#" data-role="directory">
+                            <i class="fa fa-folder"></i>
+                            &nbsp;
                             Socket
                         </a>
                          <ul class="unstyled" id="tree" >  <li class="file"><a href="/2021/02/15/Python-Socket-UDP/">UDP</a></li>  </ul> 
@@ -272,7 +281,7 @@
                         </a>
                          <ul class="unstyled" id="tree" >  <li class="file"><a href="/2021/02/13/hello-world/">Hexo</a></li>  </ul> 
                     </li> 
-                     </ul> 
+                     <li class="file"><a href="/2021/02/18/BeautifoulSoup4%E6%8C%87%E5%8D%97/">BeautifoulSoup4指南</a></li>  </ul> 
     </div>
     <script>
         $(document).ready(function() {
@@ -344,6 +353,199 @@
 </aside>
             
             <section id="main">
+        <article id="post-requests" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+    <div class="article-category">
+    	<i class="fa fa-folder"></i>
+        <a class="article-category-link" href="/categories/Python/">Python</a><i class="fa fa-angle-right"></i><a class="article-category-link" href="/categories/Python/Requests/">Requests</a>
+    </div>
+
+                        
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2021/02/18/requests/">
+            <time datetime="2021-02-18T02:14:32.000Z" itemprop="datePublished">2021-02-18</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/raw/writing/source/_posts/requests.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/edit/writing/source/_posts/requests.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/commits/writing/source/_posts/requests.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2021/02/18/requests/">requests</a>
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                
+                    
+                    <p><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install requests</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="简单使用"><a href="#简单使用" class="headerlink" title="简单使用"></a>简单使用</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># coding: utf-8</span><br><span class="line">import requests</span><br><span class="line">from bs4 import BeautifulSoup</span><br><span class="line">headers&#x3D;&#123;&quot;user-agent&quot;:&quot;Mozilla&#x2F;5.0 (Windows NT 10.0; Win64; x64) AppleWebKit&#x2F;537.36 (KHTML, like Gecko) Chrome&#x2F;88.0.4324.150 Safari&#x2F;537.36&quot;&#125;</span><br><span class="line">res&#x3D;requests.get(&quot;https:&#x2F;&#x2F;anonfiles.com&#x2F;7dQ884J6p9&quot;,headers&#x3D;headers)</span><br><span class="line">soup&#x3D;BeautifulSoup(res.text,&quot;lxml&quot;)</span><br><span class="line">targets&#x3D;soup.select(&#39;a[id&#x3D;&quot;download-url&quot;]&#39;)</span><br><span class="line">print(targets[0].get(&quot;href&quot;))</span><br></pre></td></tr></table></figure>
+
+<p>
+                
+            
+        
+        
+            </div>   
+            <div class="article-more-link">
+                <a href="/2021/02/18/requests/#more">查看更多</a>
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+
+
+
+
+    
+        <article id="post-BeautifoulSoup4指南" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+                    <div class="article-meta">
+                        
+                        
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2021/02/18/BeautifoulSoup4%E6%8C%87%E5%8D%97/">
+            <time datetime="2021-02-18T01:54:31.000Z" itemprop="datePublished">2021-02-18</time>
+        </a>
+    </div>
+
+
+                        
+                            <i class="fa fa-bar-chart"></i>
+                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
+                        
+                        
+                            <div class="article-meta-button">
+                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/raw/writing/source/_posts/BeautifoulSoup4指南.md'> Source </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/edit/writing/source/_posts/BeautifoulSoup4指南.md'> Edit </a>
+                            </div>
+                            <div class="article-meta-button">
+                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/commits/writing/source/_posts/BeautifoulSoup4指南.md'> History </a>
+                            </div>
+                        
+                    </div>
+                
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/2021/02/18/BeautifoulSoup4%E6%8C%87%E5%8D%97/">BeautifoulSoup4指南</a>
+        </h1>
+    
+
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+        
+            
+                
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                    
+                    
+                
+                
+                    
+                    <p><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install bs4</span><br></pre></td></tr></table></figure>
+
+
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">soup&#x3D;BeautifulSoup(res.text,&quot;lxml&quot;)</span><br><span class="line">targets&#x3D;soup.select(&#39;a[id&#x3D;&quot;download-url&quot;]&#39;)</span><br><span class="line">print(targets[0].get(&quot;href&quot;))</span><br></pre></td></tr></table></figure>
+
+<p>
+                
+            
+        
+        
+            </div>   
+            <div class="article-more-link">
+                <a href="/2021/02/18/BeautifoulSoup4%E6%8C%87%E5%8D%97/#more">查看更多</a>
+            </div>
+        
+        <footer class="article-footer">
+        </footer>
+    </div>
+</article>
+
+
+
+
+
+
+    
         <article id="post-SpringBoot新建项目" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
@@ -1061,157 +1263,6 @@
             </div>   
             <div class="article-more-link">
                 <a href="/2021/02/13/PDF%E6%89%AB%E6%8F%8F%E4%B9%A6%E7%B1%8D%E5%AF%B9%E6%AF%94%E5%BA%A6%E6%8F%90%E9%AB%98%E7%A8%8B%E5%BA%8F/#more">查看更多</a>
-            </div>
-        
-        <footer class="article-footer">
-        </footer>
-    </div>
-</article>
-
-
-
-
-
-
-    
-        <article id="post-关于Java开发、学习模式、与自制力" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-                    <div class="article-meta">
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/%E5%AD%A6%E4%B9%A0%E6%8E%A2%E8%AE%A8/">学习探讨</a>
-    </div>
-
-                        
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2021/02/13/%E5%85%B3%E4%BA%8EJava%E5%BC%80%E5%8F%91%E3%80%81%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%BC%8F%E3%80%81%E4%B8%8E%E8%87%AA%E5%88%B6%E5%8A%9B/">
-            <time datetime="2021-02-13T08:08:21.000Z" itemprop="datePublished">2021-02-13</time>
-        </a>
-    </div>
-
-
-                        
-                            <i class="fa fa-bar-chart"></i>
-                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
-                        
-                        
-                            <div class="article-meta-button">
-                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/raw/writing/source/_posts/关于Java开发、学习模式、与自制力.md'> Source </a>
-                            </div>
-                            <div class="article-meta-button">
-                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/edit/writing/source/_posts/关于Java开发、学习模式、与自制力.md'> Edit </a>
-                            </div>
-                            <div class="article-meta-button">
-                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/commits/writing/source/_posts/关于Java开发、学习模式、与自制力.md'> History </a>
-                            </div>
-                        
-                    </div>
-                
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2021/02/13/%E5%85%B3%E4%BA%8EJava%E5%BC%80%E5%8F%91%E3%80%81%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%BC%8F%E3%80%81%E4%B8%8E%E8%87%AA%E5%88%B6%E5%8A%9B/">关于Java开发、学习模式、与自制力</a>
-        </h1>
-    
-
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-        
-            
-                
-                <p><h2 id="Spring-Boot"><a href="#Spring-Boot" class="headerlink" title="Spring Boot"></a>Spring Boot</h2><p>SpringMVC配置得快要抓狂，配置期间各种怀疑人生。配置文件多如牛毛，一直报错，却不知道错于何处。</p>
-<p>但也并非全部是坏处，至少让我感受到了自己在技术方面的盲目自信，意识到<strong>技术是需要很庄重的对待的</strong>。是不可以短时间内掌握多门，<strong>每一门技术都需要花连续性的时间并坚持学习</strong>。</p></p>
-            
-        
-        
-            </div>   
-            <div class="article-more-link">
-                <a href="/2021/02/13/%E5%85%B3%E4%BA%8EJava%E5%BC%80%E5%8F%91%E3%80%81%E5%AD%A6%E4%B9%A0%E6%A8%A1%E5%BC%8F%E3%80%81%E4%B8%8E%E8%87%AA%E5%88%B6%E5%8A%9B/#more">查看更多</a>
-            </div>
-        
-        <footer class="article-footer">
-        </footer>
-    </div>
-</article>
-
-
-
-
-
-
-    
-        <article id="post-OpenCV扫描图像处理" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
-                    <div class="article-meta">
-                        
-    <div class="article-category">
-    	<i class="fa fa-folder"></i>
-        <a class="article-category-link" href="/categories/CV/">CV</a>
-    </div>
-
-                        
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/2021/02/13/OpenCV%E6%89%AB%E6%8F%8F%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">
-            <time datetime="2021-02-13T07:41:58.000Z" itemprop="datePublished">2021-02-13</time>
-        </a>
-    </div>
-
-
-                        
-                            <i class="fa fa-bar-chart"></i>
-                            <span id="busuanzi_container_site_pv"><span id="busuanzi_value_page_pv"></span></span>    
-                        
-                        
-                            <div class="article-meta-button">
-                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/raw/writing/source/_posts/OpenCV扫描图像处理.md'> Source </a>
-                            </div>
-                            <div class="article-meta-button">
-                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/edit/writing/source/_posts/OpenCV扫描图像处理.md'> Edit </a>
-                            </div>
-                            <div class="article-meta-button">
-                                <a target="_blank" rel="noopener" href='https://github.com/lftxd1/Wiki-site/commits/writing/source/_posts/OpenCV扫描图像处理.md'> History </a>
-                            </div>
-                        
-                    </div>
-                
-                
-    
-        <h1 itemprop="name">
-            <a class="article-title" href="/2021/02/13/OpenCV%E6%89%AB%E6%8F%8F%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/">OpenCV扫描图像处理程序</a>
-        </h1>
-    
-
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-        
-            
-                
-                <p><p>目前的想法是先用算法处理底图提高对比度，再用GAN放大图片达到清晰度提高的效果。</p></p>
-            
-        
-        
-            </div>   
-            <div class="article-more-link">
-                <a href="/2021/02/13/OpenCV%E6%89%AB%E6%8F%8F%E5%9B%BE%E5%83%8F%E5%A4%84%E7%90%86/#more">查看更多</a>
             </div>
         
         <footer class="article-footer">
