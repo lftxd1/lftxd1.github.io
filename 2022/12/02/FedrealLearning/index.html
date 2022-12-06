@@ -1,0 +1,243 @@
+<!DOCTYPE html><html lang="zh" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>联邦学习 | ylifs的博客</title><meta name="author" content="ylifs"><meta name="copyright" content="ylifs"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="摘要: 本文介绍了联邦学习的概念与各种算法以及具体实现。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="联邦学习">
+<meta property="og:url" content="http://example.com/2022/12/02/FedrealLearning/index.html">
+<meta property="og:site_name" content="ylifs的博客">
+<meta property="og:description" content="摘要: 本文介绍了联邦学习的概念与各种算法以及具体实现。">
+<meta property="og:locale">
+<meta property="og:image" content="http://101.33.231.127:1030/anyfile/ACLD35gq2VNNyYgg.png">
+<meta property="article:published_time" content="2022-12-01T17:05:11.000Z">
+<meta property="article:modified_time" content="2022-12-04T18:56:12.749Z">
+<meta property="article:author" content="ylifs">
+<meta property="article:tag" content="联邦学习">
+<meta property="article:tag" content="深度学习">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://101.33.231.127:1030/anyfile/ACLD35gq2VNNyYgg.png"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/12/02/FedrealLearning/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '联邦学习',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-12-05 02:56:12'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="http://101.33.231.127:1030/anyfile/YP7lu4DeuAIqBnBm.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('http://101.33.231.127:1030/anyfile/ACLD35gq2VNNyYgg.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">ylifs的博客</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">联邦学习</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2022-12-01T17:05:11.000Z" title="Created 2022-12-02 01:05:11">2022-12-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2022-12-04T18:56:12.749Z" title="Updated 2022-12-05 02:56:12">2022-12-05</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="联邦学习"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>摘要: 本文介绍了联邦学习的概念与各种算法以及具体实现。</p>
+<span id="more"></span>
+<h2 id="fedavg算法">FedAvg算法</h2>
+<p>联邦学习原始论文中给出的FedAvg的算法框架为：</p>
+<figure>
+<img src="http://101.33.231.127:1030/anyfile/vxINzlcBW26D7P03.png"
+alt="在这里插入图片描述" />
+<figcaption aria-hidden="true">在这里插入图片描述</figcaption>
+</figure>
+<p>参数介绍：<span
+class="math inline">\(K\)</span>表示客户端的个数，<span
+class="math inline">\(B\)</span> 表示<strong>Batch_size</strong>，<span
+class="math inline">\(E\)</span>表示本地更新的次数，<span
+class="math inline">\(\eta\)</span>表示学习率。 <span
+class="math inline">\(P_k\)</span>表示该客户端所有的数据。另外一个B表示的是由切分后的数据<strong>Batch</strong>组成的集合，<span
+class="math inline">\(C\)</span>是比例,当<span
+class="math inline">\(C==1\)</span>算法变为<strong>FedSGD</strong>。</p>
+<ol type="1">
+<li><p>从<span class="math inline">\(n\)</span>个客户端选出随机选出<span
+class="math inline">\(m\)</span>个客户端。</p></li>
+<li><p><span
+class="math inline">\(S_t\)</span>为客户端的随机序列。</p></li>
+<li><p><span
+class="math inline">\(S_t\)</span>中每个客户端并行进行梯度下降。</p></li>
+<li><p>上传模型，中心服务器进行平均。</p></li>
+<li><p>注意，我们发现</p>
+<figure>
+<img src="http://101.33.231.127:1030/anyfile/o67dcDYYx0CWbyUT.png"
+alt="image-20221202081253192" />
+<figcaption aria-hidden="true">image-20221202081253192</figcaption>
+</figure></li>
+</ol>
+<p>全局模型的生成这一步对K个模型都进行了求和，但是实际上只抽样了m个客户端，我认为这种写法还是错误的。参考了书本和很多博客，这一步想要表达的意思就是说，随机选择m个客户端采样，对这m个客户端的梯度更新进行平均以形成全局更新，同时用当前全局模型替换未采样的客户端。<span
+class="math inline">\(n_k\)</span>为k的样本数量，<span
+class="math inline">\(n\)</span>是样本总量，假设样本均衡，那就是平均。</p>
+<h3 id="为什么是上传模型而不是梯度">为什么是上传模型而不是梯度？</h3>
+<p>FedAvg解决的FL主要瓶颈 ：<br />
+1. 通信速率不稳定，且可能不可靠<br />
+2. 聚合服务器的容量有限，同时与server通信的client的数量受限</p>
+<p>因此将模型在本地多训练几个Epoch再上传，一直上传梯度对于中心服务器这种高频度的通信可能是无法承受的。</p>
+<h2 id="fl-minst代码实现">Fl Minst代码实现</h2>
+<ul>
+<li>初始化 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> random</span><br><span class="line">net = Net().to(device)</span><br><span class="line">cilent_num=<span class="number">15</span></span><br><span class="line">client_nets=[Net().to(device) <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(cilent_num)] <span class="comment"># 建立客户端网络</span></span><br><span class="line">criterion = nn.CrossEntropyLoss() </span><br><span class="line">optimizer = optim.SGD(net.parameters(), lr=<span class="number">0.01</span>, momentum=<span class="number">0.9</span>)</span><br><span class="line">optimizers = [optim.SGD(client_nets[index].parameters(), lr=<span class="number">0.01</span>, momentum=<span class="number">0.9</span>) <span class="keyword">for</span> index <span class="keyword">in</span> <span class="built_in">range</span>(cilent_num)]<span class="comment"># 为每个客户端建立单独的优化器</span></span><br><span class="line"><span class="comment"># 下载模型参数到客户端</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">download</span>():</span><br><span class="line">    <span class="keyword">for</span> model <span class="keyword">in</span> client_nets:</span><br><span class="line">        model.load_state_dict(net.state_dict())</span><br><span class="line">download()</span><br></pre></td></tr></table></figure></li>
+<li>联邦学习 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">client_index=[]</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(cilent_num):</span><br><span class="line">    <span class="keyword">if</span> random.randint(<span class="number">0</span>,<span class="number">100</span>)&lt;<span class="number">50</span>:</span><br><span class="line">        client_index.append(i)   <span class="comment"># 随机选择客户端</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> <span class="built_in">range</span>(num_epochs):</span><br><span class="line">    index=<span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i, data <span class="keyword">in</span> <span class="built_in">enumerate</span>(train_loader):</span><br><span class="line">        <span class="keyword">if</span> index <span class="keyword">in</span> client_index:</span><br><span class="line">            images, labels = data</span><br><span class="line">            images = images.to(device)</span><br><span class="line">            labels = labels.to(device)</span><br><span class="line">            outputs = client_nets[index](images)</span><br><span class="line">            loss = criterion(outputs, labels)</span><br><span class="line">            loss.backward()  <span class="comment"># 求梯度，梯度值存在net中。</span></span><br><span class="line">            optimizers[index].step()</span><br><span class="line">            optimizers[index].zero_grad()</span><br><span class="line">        index+=<span class="number">1</span></span><br><span class="line">        <span class="keyword">if</span> index%<span class="number">15</span>==<span class="number">0</span>:</span><br><span class="line">            index=<span class="number">0</span></span><br><span class="line"><span class="comment">## FedAvg</span></span><br><span class="line">first=<span class="literal">True</span></span><br><span class="line">weight=<span class="literal">None</span></span><br><span class="line"><span class="keyword">import</span> copy</span><br><span class="line"><span class="keyword">for</span> index <span class="keyword">in</span> client_index:</span><br><span class="line">    <span class="keyword">if</span> first:</span><br><span class="line">        weight=copy.deepcopy(client_nets[index]).state_dict()</span><br><span class="line">        <span class="keyword">for</span> key,value <span class="keyword">in</span> weight.items():</span><br><span class="line">            weight[key]=weight[key]/<span class="built_in">len</span>(client_index)</span><br><span class="line">        first=<span class="literal">False</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        new_weight=copy.deepcopy(client_nets[index].state_dict())</span><br><span class="line">        <span class="keyword">for</span> key,value <span class="keyword">in</span> weight.items():</span><br><span class="line">            weight[key]=weight[key]+new_weight[key]/<span class="built_in">len</span>(client_index)<span class="comment">#先除以总项目数再加</span></span><br><span class="line">net.load_state_dict(weight)</span><br><span class="line"><span class="comment"># 更新客户端</span></span><br><span class="line">download()</span><br></pre></td></tr></table></figure></li>
+<li>两种数据毒害手段 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">ShuffleLabel</span>(<span class="params">t</span>):  </span><br><span class="line">    t_list=[<span class="built_in">int</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> t]</span><br><span class="line">    random.shuffle(t_list)</span><br><span class="line">    res=torch.LongTensor(t_list)</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line"><span class="comment"># Attack 10%</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">RandomLabel</span>(<span class="params">t</span>):</span><br><span class="line">    t_list=[random.randint(<span class="number">0</span>,<span class="number">0</span>) <span class="keyword">for</span> i <span class="keyword">in</span> t]</span><br><span class="line">    random.shuffle(t_list)</span><br><span class="line">    res=torch.LongTensor(t_list)</span><br><span class="line">    <span class="keyword">return</span> res</span><br><span class="line"><span class="comment"># Attack 15%</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">adverse_index=[<span class="number">2</span>,<span class="number">6</span>,<span class="number">8</span>] <span class="comment">#建立一个恶意用户名单。</span></span><br><span class="line"><span class="keyword">if</span> index <span class="keyword">in</span> adverse_index:</span><br><span class="line">    labels=ShuffleLabel(labels)</span><br></pre></td></tr></table></figure>
+<h2 id="联邦学习防御系统">联邦学习防御系统</h2>
+<ul>
+<li>基于可信度排名的中心模型聚合机制</li>
+<li>基于模型特征聚类与动态验证的可信度计算机制</li>
+<li>基于扰动的在线防御机制</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="http://example.com">ylifs</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2022/12/02/FedrealLearning/">http://example.com/2022/12/02/FedrealLearning/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0/">联邦学习</a><a class="post-meta__tags" href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0/">深度学习</a></div><div class="post_share"><div class="social-share" data-image="http://101.33.231.127:1030/anyfile/ACLD35gq2VNNyYgg.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/12/02/NAS/"><img class="prev-cover" src="http://101.33.231.127:1030/anyfile/42GueWQOWOdZbH47.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">神经网络结构搜索</div></div></a></div><div class="next-post pull-right"><a href="/2022/11/19/hello-world/"><img class="next-cover" src="http://101.33.231.127:1030/anyfile/XB2BkrnhGhKUfSts.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">Hexo配置指南</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2022/12/07/%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E6%97%B6%E5%8A%A0%E4%B8%8A%E5%9B%BE%E5%83%8F%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA%E5%90%A7/" title="训练模型时加上图像数据增强吧"><img class="cover" src="http://101.33.231.127:1030/anyfile/wRYg0DEDx8XVIcxx.webp" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-12-07</div><div class="title">训练模型时加上图像数据增强吧</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="http://101.33.231.127:1030/anyfile/YP7lu4DeuAIqBnBm.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">ylifs</div><div class="author-info__description">普通本科生，研究领域为神经网络、多目标智能优化、生物信息、联邦学习</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/lftxd1"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/lftxd1" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ylifs@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">原神主题博客站</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#fedavg%E7%AE%97%E6%B3%95"><span class="toc-number">1.</span> <span class="toc-text">FedAvg算法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AF%E4%B8%8A%E4%BC%A0%E6%A8%A1%E5%9E%8B%E8%80%8C%E4%B8%8D%E6%98%AF%E6%A2%AF%E5%BA%A6"><span class="toc-number">1.1.</span> <span class="toc-text">为什么是上传模型而不是梯度？</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fl-minst%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.</span> <span class="toc-text">Fl Minst代码实现</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%94%E9%82%A6%E5%AD%A6%E4%B9%A0%E9%98%B2%E5%BE%A1%E7%B3%BB%E7%BB%9F"><span class="toc-number">3.</span> <span class="toc-text">联邦学习防御系统</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/12/07/%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E6%97%B6%E5%8A%A0%E4%B8%8A%E5%9B%BE%E5%83%8F%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA%E5%90%A7/" title="训练模型时加上图像数据增强吧"><img src="http://101.33.231.127:1030/anyfile/wRYg0DEDx8XVIcxx.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="训练模型时加上图像数据增强吧"/></a><div class="content"><a class="title" href="/2022/12/07/%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E6%97%B6%E5%8A%A0%E4%B8%8A%E5%9B%BE%E5%83%8F%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA%E5%90%A7/" title="训练模型时加上图像数据增强吧">训练模型时加上图像数据增强吧</a><time datetime="2022-12-06T16:45:44.000Z" title="Created 2022-12-07 00:45:44">2022-12-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/05/%E5%BF%AB%E6%9D%A5%E4%BD%BF%E7%94%A8%E4%BC%98%E5%8C%96%E4%BD%A0%E7%9A%84Pytorch%E7%9A%84%E6%98%BE%E5%AD%98%E5%8D%A0%E7%94%A8%E5%90%A7/" title="快来优化你的Pytorch的显存占用吧"><img src="http://101.33.231.127:1030/anyfile/75m8DEUDANx6VDOn.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="快来优化你的Pytorch的显存占用吧"/></a><div class="content"><a class="title" href="/2022/12/05/%E5%BF%AB%E6%9D%A5%E4%BD%BF%E7%94%A8%E4%BC%98%E5%8C%96%E4%BD%A0%E7%9A%84Pytorch%E7%9A%84%E6%98%BE%E5%AD%98%E5%8D%A0%E7%94%A8%E5%90%A7/" title="快来优化你的Pytorch的显存占用吧">快来优化你的Pytorch的显存占用吧</a><time datetime="2022-12-04T18:43:20.000Z" title="Created 2022-12-05 02:43:20">2022-12-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/05/%E6%88%90%E5%8A%9F%E5%AE%9E%E7%8E%B0Pytorch%E5%B9%B6%E8%A1%8C%E8%BF%90%E7%AE%97%EF%BC%81/" title="成功实现Pytorch并行运算！"><img src="http://101.33.231.127:1030/anyfile/F0MdboeIiDHrc3o2.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="成功实现Pytorch并行运算！"/></a><div class="content"><a class="title" href="/2022/12/05/%E6%88%90%E5%8A%9F%E5%AE%9E%E7%8E%B0Pytorch%E5%B9%B6%E8%A1%8C%E8%BF%90%E7%AE%97%EF%BC%81/" title="成功实现Pytorch并行运算！">成功实现Pytorch并行运算！</a><time datetime="2022-12-04T18:22:38.000Z" title="Created 2022-12-05 02:22:38">2022-12-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/03/NetworkStruction/" title="先进神经网络结构"><img src="http://101.33.231.127:1030/anyfile/VSxLCvgvzD9GDr0M.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="先进神经网络结构"/></a><div class="content"><a class="title" href="/2022/12/03/NetworkStruction/" title="先进神经网络结构">先进神经网络结构</a><time datetime="2022-12-03T04:24:02.000Z" title="Created 2022-12-03 12:24:02">2022-12-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/02/NAS/" title="神经网络结构搜索"><img src="http://101.33.231.127:1030/anyfile/42GueWQOWOdZbH47.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="神经网络结构搜索"/></a><div class="content"><a class="title" href="/2022/12/02/NAS/" title="神经网络结构搜索">神经网络结构搜索</a><time datetime="2022-12-02T09:56:56.000Z" title="Created 2022-12-02 17:56:56">2022-12-02</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 By ylifs</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>

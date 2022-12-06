@@ -1,0 +1,490 @@
+<!DOCTYPE html><html lang="zh" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>神经网络结构搜索 | ylifs的博客</title><meta name="author" content="ylifs"><meta name="copyright" content="ylifs"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="GreedyNAS 动机与背景与思路 在目前的神经结构搜索领域中，One-Shot NAS方法由于其搜索开销小被广泛应用，这些方法使用一个权重共享的超网络（Supernet）作为不同网络结构的性能评估器，因此，Supernet的训练对搜索结果的好坏至关重要。准确的评估对于Supernet来说是非常困难的，导致Supernet中结构的表现与其真实表现相关性很差 [1]。 在本篇论文中，我们">
+<meta property="og:type" content="article">
+<meta property="og:title" content="神经网络结构搜索">
+<meta property="og:url" content="http://example.com/2022/12/02/NAS/index.html">
+<meta property="og:site_name" content="ylifs的博客">
+<meta property="og:description" content="GreedyNAS 动机与背景与思路 在目前的神经结构搜索领域中，One-Shot NAS方法由于其搜索开销小被广泛应用，这些方法使用一个权重共享的超网络（Supernet）作为不同网络结构的性能评估器，因此，Supernet的训练对搜索结果的好坏至关重要。准确的评估对于Supernet来说是非常困难的，导致Supernet中结构的表现与其真实表现相关性很差 [1]。 在本篇论文中，我们">
+<meta property="og:locale">
+<meta property="og:image" content="http://101.33.231.127:1030/anyfile/42GueWQOWOdZbH47.webp">
+<meta property="article:published_time" content="2022-12-02T09:56:56.000Z">
+<meta property="article:modified_time" content="2022-12-05T22:43:28.536Z">
+<meta property="article:author" content="ylifs">
+<meta property="article:tag" content="论文总结">
+<meta property="article:tag" content="神经网络结构搜索">
+<meta property="article:tag" content="多目标优化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://101.33.231.127:1030/anyfile/42GueWQOWOdZbH47.webp"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="http://example.com/2022/12/02/NAS/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '神经网络结构搜索',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-12-06 06:43:28'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="http://101.33.231.127:1030/anyfile/YP7lu4DeuAIqBnBm.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('http://101.33.231.127:1030/anyfile/42GueWQOWOdZbH47.webp')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">ylifs的博客</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">神经网络结构搜索</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2022-12-02T09:56:56.000Z" title="Created 2022-12-02 17:56:56">2022-12-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2022-12-05T22:43:28.536Z" title="Updated 2022-12-06 06:43:28">2022-12-06</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%99%BA%E8%83%BD%E8%AE%A1%E7%AE%97/">智能计算</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="神经网络结构搜索"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h2 id="greedynas">GreedyNAS</h2>
+<h3 id="动机与背景与思路">动机与背景与思路</h3>
+<p>在目前的神经结构搜索领域中，One-Shot
+NAS方法由于其搜索开销小被广泛应用，这些方法使用一个权重共享的超网络（Supernet）作为不同网络结构的性能评估器，因此，Supernet的训练对搜索结果的好坏至关重要。准确的评估对于Supernet来说是非常困难的，导致Supernet中结构的表现与其真实表现相关性很差
+[1]。</p>
+<p>在本篇论文中，我们提出一种贪心超网络来减轻Supernet的评估压力，使得Supernet更加贪心地注重于有潜力的好结构，而不是全体。具体而言，在Supernet训练过程中，我们提出了一种<strong>多路径拒绝式采样方法</strong>(Multi-path
+sampling with rejection)来进行路径滤波 (path
+filtering)，使得有潜力的好结构得到训练。</p>
+<p>通过这种方法，Supernet的训练从整个搜索空间贪心地缩小到了有潜力的结构组成的空间中，因此训练的效率得到了提升。同时，为了进一步增大有潜力结构的采样概率与提高训练效率，我们基于Exploration
+and
+Exploitation准则，使用一个经验池存储评估过的“好”结构，用来加强贪心度并为后续的搜索提供好的初始点。</p>
+<p>巨大的搜索空间带来的评估压力使Supernet难以准确地区分结构的好坏，由于所有结构的权重都是在Supernet中高度共享的，如果一个差的结构被训练到了，好的结构的权重也会受到干扰。这样的干扰会削弱好网络的最终评估精度，影响网络的搜索结果。同时，对差的结构进行训练相当于对权重进行了没有必要的更新，降低Supernet的训练效率。</p>
+<h3 id="method">Method</h3>
+<p><strong>多路径拒绝式采样</strong></p>
+<p>每次采样m个结构，从中选取评估指标最高的k个结构进行训练。但是，对结构进行评估需要在验证集上计算其ACC，这样会增加非常多计算量（我们的ImageNet验证集大小为50k）。</p>
+<p>为了减少评估网络的消耗，我们从验证集中随机选取了一小部分（如1000张图）组成小验证集，并使用在小验证集上的loss作为结构的排序指标。使用小验证集进行评估，在保证评估准确性的前提下，相较uniform
+sampling方法只增加了很少的计算代价.</p>
+<p>基于Exploration and Exploitation策略的路径候选池</p>
+<p>在前面提到的路径滤波中，我们通过评估可以区分出较好的结构，为了进一步提升训练效率，受蒙特卡洛树搜索(Monte
+Carlo tree search)[4] 和 deep Q-learning[5] 中常用的exploration and
+exploitation策略启发，我们提出使用一个路径候选池用于存放训练过程中评估过的“好”结构，并进行重复利用。</p>
+<p>具体而言，候选池可以看作是一个固定大小的有序队列，其只会存储所有评估过结构中得分前n(候选池大小)
+的结构。</p>
+<p>有了候选池的帮助，我们可以选择从搜索空间中或候选池中采样结构。从候选池中采样的结构是好结构的概率更高，但可能会牺牲结构的多样性。为了平衡exploration与exploitation，我们采用ϵ-采样策略，即以一定的概率从整个搜索空间A或候选池P中采样结构α：</p>
+<figure>
+<img src="http://101.33.231.127:1030/anyfile/rcHuYWfoim0AimUO.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>在网络刚开始训练时评估过的结构较少，候选池中存储的结构是好结构的可信度不高，因此从候选池中采样的概率
+ϵ
+在开始时设为0，并线性增加至一个较高的值（在实验中，我们发现0.8是一个较优的值）。若候选池中的结构都来自好空间，通过使用候选池，<strong>定理1</strong>中好网络的采样概率q提升为：</p>
+<figure>
+<img src="http://101.33.231.127:1030/anyfile/gBGFK9WWm5IXgOnU.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>因此，采样10个结构，至少有5个好结构的概率由88.38%提升至99.36% 。</p>
+<figure>
+<img src="http://101.33.231.127:1030/anyfile/YswhGIO3IlWF6Itg.jpeg"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p><strong>基于候选池的early stopping策略</strong></p>
+<p>候选池的更新为supernet的训练情况提供了一个很好的参考。若候选池发生的更新（顺序变换、进出）较少，可以认为超网络中较好的网络维持着一个相对稳定的排序，这也说明此时的supernet已经是一个较好的性能评估器，因此训练进程可以提前结束，而不需要训练至网络完全收敛。</p>
+<p>在实际使用中，我们会比较当前候选池P与t轮迭代前的候选池P_t的差异度，若差异度低于某个数值（我们的实验使用0.08），训练停止。差异度的定义如下：</p>
+<figure>
+<img src="http://101.33.231.127:1030/anyfile/gGgiYzBDYYpOp75U.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<figure>
+<img src="http://101.33.231.127:1030/anyfile/spz0Vf59gOPqrugN.jpeg"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p><strong>基于候选池的搜索策略</strong></p>
+<p>Supernet训练结束后，我们可以使用验证集的ACC评估结构的好坏。本文使用
+NSGA-II 进化算法[3]
+进行结构搜索。我们在进化算法中使用候选池中的结构进行Population的初始化，相较于随机初始化，借助于候选池能够使进化算法有一个更好的初始，提升搜索效率及最终的精度。</p>
+<p>如 Figure 3
+所示，我们在同一个训练好的Supernet上使用了随机初始化与候选池初始化两种方式进行搜索，使用候选池初始化搜索到的结构的准确率平均会比随机初始化要高。</p>
+<figure>
+<img src="http://101.33.231.127:1030/anyfile/vWfGGGFNfPKOv0mD.png"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h3 id="实验结果">实验结果</h3>
+<h4 id="main-study">Main Study</h4>
+<p>为了与目前的one-shot方法进行对比，我们首先在与 ProxylessNAS[6] 一样的
+MobileNetV2 搜索空间上进行结构搜索，结果见 Table 1。</p>
+<figure>
+<img src="http://101.33.231.127:1030/anyfile/XYUMLzQtz1GprPpO.jpeg"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>同时为了进一步提升网络性能，我们在加入了SE的更大搜索空间上进行搜索，结果见
+Table 2 。</p>
+<figure>
+<img src="http://101.33.231.127:1030/anyfile/VlglExQPq5NoA7Cq.jpeg"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h4 id="ablation-study">Ablation Study</h4>
+<p><strong>多路径拒绝式采样中的路径评估相关性</strong></p>
+<p>我们对随机初始化、uniform
+sampling、greedy方法训练得到的supernet下的小验证集指标与完整验证集ACC相关性进行了评估，如
+Table 3
+所示。可见在小验证集上使用loss相比ACC会得到更高的相关性，我们的贪心方法训练出的supernet有着更好的相关性。</p>
+<figure>
+<img src="http://101.33.231.127:1030/anyfile/ug1G7GMiTIb9kfOQ.jpeg"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p>我们对不同大小小验证集与完整验证集的相关性进行了评估（Figure 4
+左图），同时对uniform-sampling算法在不同迭代轮数下的相关性作了评估（Figure
+4
+右图）。可以看出我们的算法在较小的验证集大小上仍能保持较高的相关性，在精度与效率的权衡下，我们最终选取
+1000 作为小验证集大小。</p>
+<figure>
+<img src="http://101.33.231.127:1030/anyfile/fiKk3qF4IYOt5GAr.jpeg"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<p><strong>对多路径贪心采样及候选池效果的评估</strong></p>
+<p>我们在MobileNetV2的search
+space下评估了多路径贪心采样及候选池的效果，如 Table 4 所示。</p>
+<figure>
+<img src="http://101.33.231.127:1030/anyfile/XiYfuR4cF4utQZ0R.jpeg"
+alt="img" />
+<figcaption aria-hidden="true">img</figcaption>
+</figure>
+<h3 id="总结">总结</h3>
+<p>超网络训练是单分支One-Shot NAS
+方法的关键。与目前方法的对所有分支一视同仁不同，我们的方法贪心地注重于有潜力的好分支的训练。这种贪心地分支滤波可以通过我们提出的多分支采样策略被高效地实现。我们提出的
+GreedyNAS 在准确率和训练效率上均展现出了显著的优势。</p>
+<h2
+id="mixpath一种一次性进行多路径搜索的nas方法">MixPath:一种一次性进行多路径搜索的NAS方法</h2>
+<p>混合使用多种卷积核在神经结构架构搜索中具有优势。但是目前的NAS方法主要局限于堆叠单路径搜索空间，如何搜索多路径的模型仍然没有得到解决。本文致力于如何训练一个多路径的超网来评价候选网络。本文发现在本文研究的多路径搜索空间中特征向量几乎是单路径特征向量的倍数结果，这就扰乱了超网的训练和超网的排序能力。因此本文提出一种新的机制，叫做<strong>影子批归一化（Shadow
+Batch
+Normalization，SBN)可以对不同特征统计量进行归一化处理。</strong>大量实验结果表明SBN可以稳定训练过程、提升排名相关性，本文将这种方法称之为MixPath。</p>
+<blockquote>
+<p>多路径这种说法略为牵强，含有Inception结构的都是多路的。</p>
+</blockquote>
+<h3 id="introduction">Introduction</h3>
+<p>神经网络自动设计时AutoML的一个重要研究方向，在主流的方法中one-shot方法基于权重共享大大降低了计算成本，但是他们只能搜索单路径网络。而多路径结构有利于提升网络性能，比如<strong>ResNeXT</strong>，在FairDarts中就尝试进行了多路径搜索。但是它是基于以下前提，即训练的one-shot超网可以准确的预测其多路径子模型的性能。 虽然fAIR
+NAS解决了单路径下的排名问题，但是无法直接将其应用在多路径场景。本文的贡献总结如下： 
+（1）本文提出一种统一的用于多路径搜索的NAS方法，并不是当前单路径堆叠的方式，从这个角度看当前的one-shot
+path方法都是本文m=1时的一种特例。
+ （2）本文解释了为什了多路径训练容易失败，本文还提出一种新的方法SBN,可以增加训练稳定性；并且可以基于不同路径的特征相似性来进一步减少m的数量，不然搜索是指数上升的。 
+ （3）本文解释了基于SBN进行多路径搜索可以提升超网训练的稳定性，也可以提升其排名的相关性。SBN还可以与后校准一起进行BN。本文在NAS-Bench-101的一个子集进行了测试获得了较高的肯德尔指标。 
+ （4）本文在ImageNet进行无代理的搜索，搜索时间为10 GPU
+days,搜索结果在Imagenet上达到了SOTA，可以与MixNet对比，但是算力是本文的200倍。此外本文的Mix-Path-B使用了多分支特征聚合，FLOPs和参数量更少。</p>
+<h3 id="related-work">Related Work</h3>
+<p><strong>Model Ranking Correlation</strong>  </p>
+<p>NAS最难以及搜索成本最高的在于候选模型的性能评估。有不同的方法对模型排名相关性进行了研究，比如隐式糊显式的使用性能预测predictors来避免实际子网络的实际验证；近期one-shot方法基训练超网和权重继承可以大大降低搜索成本。需要强调的是这类算法最重要的就是其排序能力，因为要用来评估子网络的性能，为了定量分析他们之间的排名能力主要使用。
+weight-sharing mechanism  one-shot 方法主要使用
+权重共享机制来进行NAS搜索，不同操作的中间特征展现出很高的相似性，确保这种相似性对于稳定训练一个超网十分重要。</p>
+<p>  <strong>Mixed Depthwise Convolution</strong></p>
+<p>  MixNet提出一种可以处理不同深度卷积的通道等划分方法，证明对图像分类很有效。但是如果MixNet依旧遵循MNASNAS搜索成本就太高了，不适合实际应用。AutoNAS的搜索空间包含了通道可变的MixConv，并且使用可微方法来取出一些dead
+block。尽管最终搜索的模型性能很高，但是这种细粒度的通道划分导致了很大的不一致性，移植到移动端需要进一步处理。</p>
+<p>   <strong>Multi-branch Feature Aggrefation</strong>
+   本文认知中第一个多分支的神经网络是使用了skip
+connection的ResNet，ResNeX进一步做了推广，将一些同质的卷积进行了加和。</p>
+<p>    <strong>Conditional Batch Normalization</strong>
+     BN通过将每层的输入归一化来稳定训练，在训练超网时仅使用NC无法有效捕获各种输入的动态特征，在Slimmable中引入了共享超网的概念可以在不同尺度上进行，但是需要对不同路径上使用不同的BN来统计输入信息。但是如果放到任意通道宽度上就不切实际了，因为需要进一步增加BN的数目，原文也是通过分布式计算来规避这一问题</p>
+<h3 id="mix-path">Mix Path</h3>
+<p>目前的基于权重共享的方法可以分成以下两类：
+先验学习和多路径方法，参见Fig 2。比如DARTS和F air
+DARTSd都是先学习一个较为优异的网络，后者还允许两个节点之间的多条路径。而一次性方法不学习先验知识，而是学习一个超网来评估子网络的性能。目前他们还都仅限于单路径的搜索空间，因此自然就会想到多路径的搜索空间。<strong>像Inception系列已经证明使用多路径特征聚合是十分有效的，并且可以有效的权衡精度和计算成本。</strong>
+<img src="http://101.33.231.127:1030/anyfile/x6DCUoOliBXAyePd.png"
+alt="在这里插入图片描述" /></p>
+<p>深度卷积核<span
+class="math inline">\(k\)</span>一般设置为3或者5,因此<span
+class="math inline">\(C_{in}\)</span>一般是影响计算成本最主要的因素，本文可以通过增加k的数目这样一方面带来的计算成本较小同时又能增强深度转换的代表能力，可以看做是MixConv和ResNeXt的结合。</p>
+<p>  可以通过一次随机激活多个路径来训练多路径超网，比如使用伯努利采样来独立的激活每个操作，但是根据本文在ImageNet上对MixPath进行的初步实现可以看到训练过程并不稳定——参见Fig
+3的蓝线，可以看到one-shot超网学习无法将有用的信息传递到子网上，因此本文认为不稳定的超网训练会影响超网的排名能力。
+   <strong>是什么原因导致了这样的问题呢？</strong>
+   之前的研究表明不同操作提取的特征其余弦相似性是类似的，而打破这种相似性可能会导致训练的不稳定性。 比如本文提取了超网中不同特征的余弦相似性，发现不仅单路径的特征比起相似，而且多路径的特征叠加也是如此，即余弦相似性理论在这里似乎并不适用——参见Fig
+4的最上面。可以看到因为特征一般是高维向量，因此将他们相加不会改变他们之间的角度，因为他们是相似的，但是确实会放大特征向量的幅度（参考图中最右边的蓝色箭头），这样就会影响特征的统计数据。 我们可以进一步做一个大胆的假设：<strong>多个向量的简单叠加会对特征统计数据有动态影响从而使得训练不稳定，将特征缩放到相同尺度可以稳定训练。</strong>
+<img src="http://101.33.231.127:1030/anyfile/oddtgLd06Ifkg5fQ.png"
+alt="在这里插入图片描述" /></p>
+<p>因此本文提出<strong>使用多个BN来归一化特征数据，称之为Shadow Batch
+Normalization(SBN)</strong>,参见Fig
+4(b)，可以看到在SBN的作用下具有不同幅度的特征向量被缩放到相同的尺度，但如果不使用SBN他们就会被缩放到不同的尺度；另外SBN也可以捕获到不同的分布。 接下来本文将从余弦相似度出发来证明SBN的可行性。</p>
+<h3 id="neural-architecture-search-with-mixpath-supernet">Neural
+Architecture Search with MixPath Supernet</h3>
+<p>基于上述实验观察结果，本文使用SBN来搜索多路径超网，命名为MixPath超网。在One-shot训练后需要使用超网来评估子网的性能，因此本文的搜索方法分两阶段进行：使用SBN训练超网然后搜索具有竞争力的模型。 具体而言在训练阶段采用伯努利采样，使得一次可以激活多条路径，他们加起来有一个混合输出，接下来适应一个相应的SBN添加到当前的路径组合中，详细计算过程参见附录B.1部分。
+ 接下来基于进化算法（MSGA-II）进行搜索,搜索目标是最大化分类精度同时最小化损失函数。 此外本文还是用BN校准作为后处理，可以有效的提升排序相关性。</p>
+<p>为了证明SBN可以稳定超网训练、提升分类一致性，本文在NAS-Bench-101上进行了测试。但做了一些调整，比如前四个节点用来选择候选路径，每一节点包含3种操作，分别是1x1卷积、3x3卷积和3x3maxpool。所有被选择路径的输出会被加和然后作为第五个节点的输入，然后再使用SBN。Fig
+6展示了设计的cell的具体结构。 <img
+src="http://101.33.231.127:1030/anyfile/LMLnP0C9vyQ7UARz.png"
+alt="在这里插入图片描述" /></p>
+<p>为了进一步分析本文的排序性能，并且探究SBN的影响，还进行了对比实验，分别使用原始的BN和本文的SBN。 超网训练100epoch然后随机采样70个模型计算在NAS-Bench-101上的top-1精度，从而获得肯德尔Tao指标，结果参见Table
+1和Fig 6.  可以看到BN后校准可以进一步提升Kendall
+Tao指标。当M=4时及时不使用后校准，SBN的排序相关性仍然优于原始的BN。因此本文已经通过实验验证了SBN的有效性，接下来将要在CIFAR-10和ImageNet上进行搜索。</p>
+<h3 id="ablation-study-1">Ablation Study</h3>
+<p>不同策略下的超网排序性能 本文首先研究了使用SBN对超网的排序性能的影响，实验设置m=3，并取3种seed的结果，随机抽样70个子网络计算kendall
+Tau </p>
+<p><strong>case 1:SuperNet with and without SBN</strong>  结果参见Fig
+5,对于不适应SBN训练的超网其kendall
+Tao远低于使用SBN训练的超网，并且SBN在辅助后校准后性能提升的更多。</p>
+<p> <strong>case 2:Linear number of SBNs vs Exponential</strong> 
+ 本文通过理论分析证实了线性数目的SBN可以匹配所有可激活路径的综合，从Tabel
+5中可以看出linear
+SBN+BN校准性能最好，如果不用校准则是指数SBN性能最好、 主要是应为线性SBN使用了0阶条件下的近似，指数SBN会更准确，因为确实是计算了每一种组合的统计数据，因此统计的γ，β分布也较为广泛，BN很难拟合他们，因此导致排名一致性有所下降。 本文选择使用BN校准的线性SBN。</p>
+<p><strong>case 3:One-shot Accuracy Distriobution of Candidate Models vs
+wrt M</strong>
+  本文设置m=1,2,3,4来研究SBN的小姑，其他设置保持不变， m=1代表的是单路径搜索 可以看到对于多路径的情况如果不使用SBN将会导致预测性能和实际性能存在较大差距，说明不使用SBN的超网严重低估了大部分子网的性能。
+   case 4:随机搜索 vs 进化搜索     本文还对比了两种搜索策略，结果参见Fig
+9，可以看到进化搜索的NSGA-II有明显优势，搜索结果精度更高，乘累加操作更少。 </p>
+<h3 id="discussions">Discussions</h3>
+<ol type="1">
+<li>为什么SBN能够稳定超网训练，提升排名一致性 ？
+本文已经验证了较高的余弦相似度不是保证多路径网络训练稳定的唯一因素，更重要的是确保多路径的特征分布一致性。而单一BN无法捕获这种统计数据的变化，并且会干扰训练， 使用SBN可以跟踪各种分布，消除了这种训练的不稳定性，因此对超网可以进行更好的训练，这样也能为每个子网提佛那个更合适的权重，从而更好的保证每种子网的真正权重参数。</li>
+<li>为什么SBN加上BN后校准可以进一步提升排名一致性？
+根据3.2节的理论分析，多路径的特征分布会是单路径的倍数，参见Fig
+5表示的，但并不是所有的参数都严格遵循这种关系，使用BN后校准可以重新调整输入的均值和方差，来拟合学习的参数，这一定程度上弥补了对超网的训练不足。 并且SBN和BN后校准相互独立，都可以用来提升排名一致性。</li>
+</ol>
+<p>提出了一种统一的一次性多路径搜索方法，弥补了one-shot和多路径搜索空间中存在的问题。现在的单路径搜索可以作为本文的一种特例，本文借助SBN可以有效捕获不同路径组合导致的特征分布变化问题，成功的解决了常规多路径搜索的两大痛点：训练不稳定和排名一致性差的问题。 此外利用不同路径特征组合后的相似性可以将所需SBN的数目减少到m种，与可激活路径数目抑制。 在NAS-Bench-101上的实验结果表明本文的方法可以显著提升one-shot超网的排名一致性，并且搜索结果再ImageNet上达到了SOTA，并且可以迁移到CIFAR-10数据集和COCO目标检测任务中。 
+   未来本文将进一步探索如何提升超网的评价性能，并且对本文的权重共享和排名性能提供更加深入的理论分析。</p>
+<h2
+id="efficient-neural-architecture-search-via-parameter-sharing">Efficient
+Neural Architecture Search via Parameter Sharing</h2>
+<h3 id="macro-space">Macro Space</h3>
+<figure>
+<img src="http://101.33.231.127:1030/anyfile/AiYyzw8gpp0yYnNk.png"
+alt="image-20221203235341680" />
+<figcaption aria-hidden="true">image-20221203235341680</figcaption>
+</figure>
+<h3 id="micro-space">Micro Space</h3>
+<p>从<strong>h[i]</strong>和<strong>h[i-1]</strong>来获取数据。</p>
+<p><img src="http://101.33.231.127:1030/anyfile/R0cPrphnbAgEg2NK.png" alt="image-20221203235417720" style="zoom: 67%;" /></p>
+<p><img src="http://101.33.231.127:1030/anyfile/fXVcMLSpnMCvWNYW.png" alt="image-20221203235518081" style="zoom: 67%;" /></p>
+<h3 id="结论">结论</h3>
+<ol type="1">
+<li><p>效果上DenseNet加上Cutout可以到达97.44的成绩。</p></li>
+<li><p>ENAS在Cell上的搜索效果更好，勉强到达97.35.还是没超过DenseNet。</p></li>
+<li><p>Cutout这个数据增强方法相当<strong>Robust</strong>。</p></li>
+</ol>
+<h2 id="multisupernas">MultiSuperNas</h2>
+<h3 id="搜索空间">搜索空间</h3>
+<p>对Cell进行搜索，cell类似于<span
+class="math inline">\(Inception\)</span>，每条路径有3，2两种长度，一共有N条路径，最终保留<span
+class="math inline">\(M\)</span>条路径进行<span
+class="math inline">\(Cat\)</span>，每个<span
+class="math inline">\(cell_i\)</span>通过传入<span
+class="math inline">\(cell_{i-1}\)</span>和<span
+class="math inline">\(cell_{i-2}\)</span>两个输入实现密集连接。<strong>目前不强调在搜索上的创新只是描述对搜索空间存在一些描述。</strong>
+不采用<span class="math inline">\(Macro
+Space\)</span>搜索空间主要是考虑到<span
+class="math inline">\(ENAS\)</span>的<span
+class="math inline">\(Acc\)</span>没有超过98，其次其他先进的<span
+class="math inline">\(One-shotNAS\)</span>方法几乎都是基于<span
+class="math inline">\(Cell\)</span>进行搜索，因此采用<span
+class="math inline">\(Macro
+Space\)</span>空间搜索的收益比较低，而带来的不稳定性和设计难度加剧。</p>
+<p>另外对于为什么没有采用<span
+class="math inline">\(DenseNet\)</span>连接，这是因为<span
+class="math inline">\(DenseNet\)</span>是也分为了块，在每个块内进行密集连接，不是简单的进行了全部连接，而是发生了许多的特征重用，前几层的<span
+class="math inline">\(FeatureMap\)</span>直接<span
+class="math inline">\(Concat\)</span>到当前层，因此通道数量不断递增。如果要进行灵活的Skip，也只能在块内进行，每个Cell接收的Skip数量不好界定，如果不固定Skip数量则需要1*1卷积进行变换，这又增加了许多的不确定性。如果固定，则Skip的数量不好界定。我目前倾向于不能把系统设计得太复杂，复杂不代表效果好，效果好的往往有着清晰的思路，目前这个思路还是很难Work。</p>
+<figure>
+<img src="http://101.33.231.127:1030/anyfile/pzftUNG1Hyq8FO9w.png"
+alt="image-20221206063533249" />
+<figcaption aria-hidden="true">image-20221206063533249</figcaption>
+</figure>
+<p>Inception首先对上层的通道数量进行了拆解以减少计算量，最后再汇合。</p>
+<ul>
+<li>特征数量先减小再扩大(Concat)。</li>
+<li>不使用池化来缩减特征图大小，而是采用Stride为2的卷积。</li>
+<li>有两个1*1卷积分别负责将1+2和1归一到输入的通道数量。</li>
+<li>无论汇聚了几条路线，最终都用1*1来输出固定的通道数量。</li>
+</ul>
+<p><strong>采用这种搜索空间主要是考虑这些好处</strong>:</p>
+<ul>
+<li>存在跳层，加快收敛、增加模型性能。</li>
+<li><strong>多个特征尺度融合+特征复用</strong>。</li>
+<li>顺序进行，训练速度快。</li>
+</ul>
+<p><strong>操作算子:</strong></p>
+<ol type="1">
+<li>3*3卷积</li>
+<li>5*5卷积</li>
+<li>avg</li>
+<li>pool</li>
+<li>1331</li>
+<li>1551</li>
+</ol>
+<p><strong>12.6</strong></p>
+<ul>
+<li>今天发现一个等价，实际上4选3和只有3是等价的，本质上都是在随机组合。所以直接4路汇聚。</li>
+<li>怀疑1*1的卷积存在亏损，所以固定通道数量，将池化加上11卷积使其也能够变换通道数量和特征图大小。</li>
+<li>重新思考特征图缩放的层数，将其两次特征图下采样的层数都向前提。</li>
+</ul>
+<h3 id="基于排斥的多超网训练">基于排斥的多超网训练</h3>
+<p>由于需要一次性训练多个超网，超网用于网络的性能评估，因此需要保障超网的多样性。</p>
+<p>利用相似性拒取使得多个超网选取计算的结构存在显著差异。</p>
+<h3 id="基于多超网的综合评估机制">基于多超网的综合评估机制</h3>
+<p>对网络的性能评估取决于超网，单个超网容易出现对于某些结构的偏好，基于单超网的评估是不够公平、客观的。因此通过多个超网对网络的性能进行综合评估。</p>
+<p>但是性能评估可能会出现这三种情况:</p>
+<ol type="1">
+<li>超网A、B认为该结构的性能很好。</li>
+<li>超网A或者B认为该结构的性能好，另一方认为一般或者是很差。</li>
+<li>超网A、B认为该结构的性能很差。</li>
+</ol>
+<p>对于超网的数量<span
+class="math inline">\(K\)</span>可以进行对比实验。</p>
+<p><strong>综合评估应该取均值吗？</strong>
+评估机制可以进行对比实验，看看是均值还是支配。</p>
+<h3 id="cell与cell内的交叉机制">Cell与Cell内的交叉机制</h3>
+<p>就是外交叉和内交叉，基于Cell完全可以对多个Cell进行交叉或者只交叉Cell内部。</p>
+<p>这个可以用来做消融实验。</p>
+<h3
+id="维护结构库和cell库基于优秀结构的搜索启动机制">维护结构库和Cell库，基于优秀结构的搜索启动机制</h3>
+<p>最小单元变成Cell,如果存在Cell的替换使得某个结构变得更好，则有理由相信该Cell的性能比较好，则可以存入Cell库。</p>
+<p>也可以对库内的优秀结构进行分析求同来得到比较好的Cell。</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="http://example.com">ylifs</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="http://example.com/2022/12/02/NAS/">http://example.com/2022/12/02/NAS/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E8%AE%BA%E6%96%87%E6%80%BB%E7%BB%93/">论文总结</a><a class="post-meta__tags" href="/tags/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C%E7%BB%93%E6%9E%84%E6%90%9C%E7%B4%A2/">神经网络结构搜索</a><a class="post-meta__tags" href="/tags/%E5%A4%9A%E7%9B%AE%E6%A0%87%E4%BC%98%E5%8C%96/">多目标优化</a></div><div class="post_share"><div class="social-share" data-image="http://101.33.231.127:1030/anyfile/42GueWQOWOdZbH47.webp" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/12/03/NetworkStruction/"><img class="prev-cover" src="http://101.33.231.127:1030/anyfile/VSxLCvgvzD9GDr0M.webp" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">Previous Post</div><div class="prev_info">先进神经网络结构</div></div></a></div><div class="next-post pull-right"><a href="/2022/12/02/FedrealLearning/"><img class="next-cover" src="http://101.33.231.127:1030/anyfile/ACLD35gq2VNNyYgg.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">联邦学习</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="http://101.33.231.127:1030/anyfile/YP7lu4DeuAIqBnBm.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">ylifs</div><div class="author-info__description">普通本科生，研究领域为神经网络、多目标智能优化、生物信息、联邦学习</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">7</div></a><a href="/tags/"><div class="headline">Tags</div><div class="length-num">10</div></a><a href="/categories/"><div class="headline">Categories</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/lftxd1"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/lftxd1" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="mailto:ylifs@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>Announcement</span></div><div class="announcement_content">原神主题博客站</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#greedynas"><span class="toc-number">1.</span> <span class="toc-text">GreedyNAS</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8A%A8%E6%9C%BA%E4%B8%8E%E8%83%8C%E6%99%AF%E4%B8%8E%E6%80%9D%E8%B7%AF"><span class="toc-number">1.1.</span> <span class="toc-text">动机与背景与思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#method"><span class="toc-number">1.2.</span> <span class="toc-text">Method</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C"><span class="toc-number">1.3.</span> <span class="toc-text">实验结果</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#main-study"><span class="toc-number">1.3.1.</span> <span class="toc-text">Main Study</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#ablation-study"><span class="toc-number">1.3.2.</span> <span class="toc-text">Ablation Study</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.4.</span> <span class="toc-text">总结</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#mixpath%E4%B8%80%E7%A7%8D%E4%B8%80%E6%AC%A1%E6%80%A7%E8%BF%9B%E8%A1%8C%E5%A4%9A%E8%B7%AF%E5%BE%84%E6%90%9C%E7%B4%A2%E7%9A%84nas%E6%96%B9%E6%B3%95"><span class="toc-number">2.</span> <span class="toc-text">MixPath:一种一次性进行多路径搜索的NAS方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#introduction"><span class="toc-number">2.1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#related-work"><span class="toc-number">2.2.</span> <span class="toc-text">Related Work</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#mix-path"><span class="toc-number">2.3.</span> <span class="toc-text">Mix Path</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#neural-architecture-search-with-mixpath-supernet"><span class="toc-number">2.4.</span> <span class="toc-text">Neural
+Architecture Search with MixPath Supernet</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#ablation-study-1"><span class="toc-number">2.5.</span> <span class="toc-text">Ablation Study</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#discussions"><span class="toc-number">2.6.</span> <span class="toc-text">Discussions</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#efficient-neural-architecture-search-via-parameter-sharing"><span class="toc-number">3.</span> <span class="toc-text">Efficient
+Neural Architecture Search via Parameter Sharing</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#macro-space"><span class="toc-number">3.1.</span> <span class="toc-text">Macro Space</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#micro-space"><span class="toc-number">3.2.</span> <span class="toc-text">Micro Space</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%93%E8%AE%BA"><span class="toc-number">3.3.</span> <span class="toc-text">结论</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#multisupernas"><span class="toc-number">4.</span> <span class="toc-text">MultiSuperNas</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%90%9C%E7%B4%A2%E7%A9%BA%E9%97%B4"><span class="toc-number">4.1.</span> <span class="toc-text">搜索空间</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E6%8E%92%E6%96%A5%E7%9A%84%E5%A4%9A%E8%B6%85%E7%BD%91%E8%AE%AD%E7%BB%83"><span class="toc-number">4.2.</span> <span class="toc-text">基于排斥的多超网训练</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E4%BA%8E%E5%A4%9A%E8%B6%85%E7%BD%91%E7%9A%84%E7%BB%BC%E5%90%88%E8%AF%84%E4%BC%B0%E6%9C%BA%E5%88%B6"><span class="toc-number">4.3.</span> <span class="toc-text">基于多超网的综合评估机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cell%E4%B8%8Ecell%E5%86%85%E7%9A%84%E4%BA%A4%E5%8F%89%E6%9C%BA%E5%88%B6"><span class="toc-number">4.4.</span> <span class="toc-text">Cell与Cell内的交叉机制</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%B4%E6%8A%A4%E7%BB%93%E6%9E%84%E5%BA%93%E5%92%8Ccell%E5%BA%93%E5%9F%BA%E4%BA%8E%E4%BC%98%E7%A7%80%E7%BB%93%E6%9E%84%E7%9A%84%E6%90%9C%E7%B4%A2%E5%90%AF%E5%8A%A8%E6%9C%BA%E5%88%B6"><span class="toc-number">4.5.</span> <span class="toc-text">维护结构库和Cell库，基于优秀结构的搜索启动机制</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/12/07/%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E6%97%B6%E5%8A%A0%E4%B8%8A%E5%9B%BE%E5%83%8F%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA%E5%90%A7/" title="训练模型时加上图像数据增强吧"><img src="http://101.33.231.127:1030/anyfile/wRYg0DEDx8XVIcxx.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="训练模型时加上图像数据增强吧"/></a><div class="content"><a class="title" href="/2022/12/07/%E8%AE%AD%E7%BB%83%E6%A8%A1%E5%9E%8B%E6%97%B6%E5%8A%A0%E4%B8%8A%E5%9B%BE%E5%83%8F%E6%95%B0%E6%8D%AE%E5%A2%9E%E5%BC%BA%E5%90%A7/" title="训练模型时加上图像数据增强吧">训练模型时加上图像数据增强吧</a><time datetime="2022-12-06T16:45:44.000Z" title="Created 2022-12-07 00:45:44">2022-12-07</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/05/%E5%BF%AB%E6%9D%A5%E4%BD%BF%E7%94%A8%E4%BC%98%E5%8C%96%E4%BD%A0%E7%9A%84Pytorch%E7%9A%84%E6%98%BE%E5%AD%98%E5%8D%A0%E7%94%A8%E5%90%A7/" title="快来优化你的Pytorch的显存占用吧"><img src="http://101.33.231.127:1030/anyfile/75m8DEUDANx6VDOn.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="快来优化你的Pytorch的显存占用吧"/></a><div class="content"><a class="title" href="/2022/12/05/%E5%BF%AB%E6%9D%A5%E4%BD%BF%E7%94%A8%E4%BC%98%E5%8C%96%E4%BD%A0%E7%9A%84Pytorch%E7%9A%84%E6%98%BE%E5%AD%98%E5%8D%A0%E7%94%A8%E5%90%A7/" title="快来优化你的Pytorch的显存占用吧">快来优化你的Pytorch的显存占用吧</a><time datetime="2022-12-04T18:43:20.000Z" title="Created 2022-12-05 02:43:20">2022-12-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/05/%E6%88%90%E5%8A%9F%E5%AE%9E%E7%8E%B0Pytorch%E5%B9%B6%E8%A1%8C%E8%BF%90%E7%AE%97%EF%BC%81/" title="成功实现Pytorch并行运算！"><img src="http://101.33.231.127:1030/anyfile/F0MdboeIiDHrc3o2.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="成功实现Pytorch并行运算！"/></a><div class="content"><a class="title" href="/2022/12/05/%E6%88%90%E5%8A%9F%E5%AE%9E%E7%8E%B0Pytorch%E5%B9%B6%E8%A1%8C%E8%BF%90%E7%AE%97%EF%BC%81/" title="成功实现Pytorch并行运算！">成功实现Pytorch并行运算！</a><time datetime="2022-12-04T18:22:38.000Z" title="Created 2022-12-05 02:22:38">2022-12-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/03/NetworkStruction/" title="先进神经网络结构"><img src="http://101.33.231.127:1030/anyfile/VSxLCvgvzD9GDr0M.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="先进神经网络结构"/></a><div class="content"><a class="title" href="/2022/12/03/NetworkStruction/" title="先进神经网络结构">先进神经网络结构</a><time datetime="2022-12-03T04:24:02.000Z" title="Created 2022-12-03 12:24:02">2022-12-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/12/02/NAS/" title="神经网络结构搜索"><img src="http://101.33.231.127:1030/anyfile/42GueWQOWOdZbH47.webp" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="神经网络结构搜索"/></a><div class="content"><a class="title" href="/2022/12/02/NAS/" title="神经网络结构搜索">神经网络结构搜索</a><time datetime="2022-12-02T09:56:56.000Z" title="Created 2022-12-02 17:56:56">2022-12-02</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 By ylifs</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="Toggle Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.1
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container').forEach(node => {
+            if (node.hasAttribute('display')) {
+              btf.wrap(node, 'div', { class: 'mathjax-overflow' })
+            } else {
+              btf.wrap(node, 'span', { class: 'mathjax-overflow' })
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax/es5/tex-mml-chtml.min.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script></div><script defer="defer" id="ribbon" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/canvas-ribbon.min.js" size="150" alpha="0.6" zIndex="-1" mobile="false" data-click="false"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
