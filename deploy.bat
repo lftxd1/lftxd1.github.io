@@ -48,6 +48,9 @@ REM ---- 3. Deploy to main branch ----
 echo.
 echo [3/4] Deploying to %DEPLOY_BRANCH% branch...
 
+REM Make sure we have the remote branch locally
+git fetch origin %DEPLOY_BRANCH% >nul 2>&1
+
 REM Clean up any leftover worktree from a previous failed run
 if exist %WORKTREE_DIR% (
     git worktree remove --force %WORKTREE_DIR% >nul 2>&1
