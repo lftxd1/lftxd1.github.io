@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>环境配置 on 前海分享</title>
+		<link>https://example.org/environmentconfig/</link>
+		<description>Recent content in 环境配置 on 前海分享</description>
+		<generator>Hugo</generator>
+		<language>en-us</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 19 Jul 2026 14:48:46 +0800</lastBuildDate>
+		
+			<atom:link href="https://example.org/environmentconfig/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Mamba SSM环境配置</title>
+				<link>https://example.org/environmentconfig/mamba-ssm%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</link>
+				<pubDate>Sun, 19 Jul 2026 14:48:46 +0800</pubDate>
+				<guid>https://example.org/environmentconfig/mamba-ssm%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</guid>
+				<description>&lt;h2 id=&#34;前言&#34;&gt;前言&lt;/h2&gt;&#xA;&lt;p&gt;Mamba-SSM还需要安装Causal_conv&lt;/p&gt;&#xA;&lt;p&gt;只能通过在GitHub上下载whl文件来进行安装。&lt;/p&gt;&#xA;&lt;h2 id=&#34;实际配置&#34;&gt;实际配置&lt;/h2&gt;&#xA;&lt;p&gt;即便下载了符合cuda和torch版本的mamba-ssm，依旧是失败。&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;唯一成功的方案是如下配置：&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;div class=&#34;code-block&#34;&gt;&#xD;&#xA;    &lt;button class=&#34;code-copy&#34; type=&#34;button&#34; hidden aria-label=&#34;Copy code to clipboard&#34;&gt;&#xD;&#xA;      &lt;span class=&#34;code-copy-label&#34; aria-hidden=&#34;true&#34;&gt;Copy&lt;/span&gt;&#xD;&#xA;    &lt;/button&gt;&#xD;&#xA;    &lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;9527MY on Apr 3&#xA;i solve this problem.我解决了这个问题。&#xA;at cuda 12.4在cuda 12.4&#xA;pytorch 2.4&#xA;python 3.11&#xA;iintalled that我安装了那个&#xA;mamba_ssm-2.2.2+cu122torch2.4cxx11abiFALSE-cp311-cp311-linux_x86_64.whl&#xA;causal_conv1d-1.4.0+cu122torch2.4cxx11abiFALSE-cp311-cp311-linux_x86_64.whl&#xA;you can find at&#xA;你可以在&#xA;https://github.com/Dao-AlLab/causal-conv1d/releases/tag/v1.4.0https://github.com/state-spaces/mamba/releases/tag/v2.2.2L1&lt;/code&gt;&lt;/pre&gt;&#xD;&#xA;  &lt;/div&gt;</description>
+			</item>
+	</channel>
+</rss>
