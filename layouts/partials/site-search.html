@@ -1,0 +1,27 @@
+<div class="site-search">
+  <link href="/pagefind/pagefind-ui.css" rel="stylesheet">
+  <script src="/pagefind/pagefind-ui.js" defer></script>
+  <div id="search"></div>
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      if (window.PagefindUI) {
+        new PagefindUI({
+          element: '#search',
+          showSubResults: true,
+          showImages: false,
+          resetStyles: false,
+          translations: {
+            placeholder: '搜索文章...',
+            clear_search: '清除',
+            load_more: '加载更多',
+            search_label: '搜索',
+            zero_results: '没找到 "[SEARCH_TERM]" 相关结果',
+            many_results: '找到 [COUNT] 个 [SEARCH_TERM] 相关结果',
+            one_result: '找到 1 个 [SEARCH_TERM] 相关结果',
+            alt_search_tip: '没有 [SEARCH_TERM] 相关结果。换一个关键词试试？',
+          },
+        });
+      }
+    });
+  </script>
+</div>

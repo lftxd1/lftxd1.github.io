@@ -1,0 +1,7 @@
+{{/*
+  Override of ananke theme's head-additions.html.
+  Keeps the original "head-end" hook, then injects <meta name="referrer" content="never">
+  to fix Tencent COS 403 errors caused by the default Referer header.
+*/}}
+{{- partials.Include "hook.html" (dict "hook" "head-end" "context" .) -}}
+<meta name="referrer" content="never">
