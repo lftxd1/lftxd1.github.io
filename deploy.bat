@@ -1,17 +1,18 @@
 @echo off
 setlocal
 
-REM Auto cd to script's own directory so it works from any cwd
-cd /d "%~dp0"
-
 REM ============================================================
 REM  Hugo blog one-click deploy
 REM  Repo : https://github.com/lftxd1/lftxd1.github.io
 REM  Usage: double-click deploy.bat or run it in cmd
 REM ============================================================
 
+REM Auto cd to script's own directory so it works from any cwd
+cd /d "%~dp0"
+
 set SOURCE_BRANCH=source
 set DEPLOY_BRANCH=main
+set WORKTREE_DIR=..\gh-pages-main
 
 echo.
 echo ============================================================
@@ -48,19 +49,24 @@ echo.
 echo [3/4] Deploying to %DEPLOY_BRANCH% branch...
 
 REM Clean up any leftover worktree from a previous failed run
-cd ..
-if exist gh-pages-main (
-    git -C my-first-blog worktree remove --force gh-pages-main >nul 2>&1
-    git -C my-first-blog branch -D %DEPLOY_BRANCH% >nul 2>&1
+if exist %WORKTREE_DIR% (
+    git worktree remove --force %WORKTREE_DIR% >nul 2>&1
+    git branch -D %DEPLOY_BRANCH% >nul 2>&1
 )
 
-REM Create worktree for main branch
-git -C my-first-blog worktree add -B %DEPLOY_BRANCH% gh-pages-main origin/%DEPLOY_BRANCH%
+REM Create worktree at sibling of project dir (D:\BLOG\gh-pages-main)
+git worktree add -B %DEPLOY_BRANCH% %WORKTREE_DIR% origin/%DEPLOY_BRANCH%
 if errorlevel 1 goto :fail
 
-cd gh-pages-main
+REM === SAFETY CHECKS ===
+REM If we can't cd into worktree, ABORT - never run destructive ops in wrong dir
+cd /d %WORKTREE_DIR% 2>nul
+if errorlevel 1 goto :worktree_fail
 
-REM Clear worktree contents (keep .git)
+REM Verify we are actually in the worktree (look for worktree's .git pointer)
+if not exist .git goto :worktree_fail
+
+REM Clear worktree contents (KEEP .git)
 powershell -NoProfile -Command "Get-ChildItem -Force | Where-Object { $_.Name -ne '.git' } | Remove-Item -Recurse -Force" >nul 2>&1
 
 REM Copy public/* contents into current dir
@@ -75,10 +81,9 @@ git push --force origin %DEPLOY_BRANCH%
 if errorlevel 1 goto :cleanup_fail
 
 REM ---- 4. Cleanup ----
-:cleanup
-cd ..
-git -C my-first-blog worktree remove --force gh-pages-main >nul 2>&1
-git -C my-first-blog branch -D %DEPLOY_BRANCH% >nul 2>&1
+cd /d "%~dp0"
+git worktree remove --force %WORKTREE_DIR% >nul 2>&1
+git branch -D %DEPLOY_BRANCH% >nul 2>&1
 
 echo.
 echo ============================================================
@@ -93,12 +98,18 @@ echo.
 echo *** DEPLOY FAILED ***
 exit /b 1
 
+:worktree_fail
+echo.
+echo *** WORKTREE NOT FOUND - ABORTING TO PREVENT DAMAGE ***
+echo *** Run again. If it persists, manually: rmdir /S /Q %WORKTREE_DIR% ***
+exit /b 1
+
 :cleanup_fail
 echo.
 echo *** PUSH FAILED - cleaning up worktree ***
-cd ..
-git -C my-first-blog worktree remove --force gh-pages-main >nul 2>&1
-git -C my-first-blog branch -D %DEPLOY_BRANCH% >nul 2>&1
+cd /d "%~dp0"
+git worktree remove --force %WORKTREE_DIR% >nul 2>&1
+git branch -D %DEPLOY_BRANCH% >nul 2>&1
 exit /b 1
 
 endlocal
