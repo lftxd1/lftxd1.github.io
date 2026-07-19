@@ -1,6 +1,9 @@
 @echo off
 setlocal
 
+REM Auto cd to script's own directory so it works from any cwd
+cd /d "%~dp0"
+
 REM ============================================================
 REM  Hugo blog one-click deploy
 REM  Repo : https://github.com/lftxd1/lftxd1.github.io
