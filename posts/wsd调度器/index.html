@@ -192,7 +192,7 @@ step lr loss acc 53500 0.0003 0.9219 59.6% 53600 0.0003 0.9198 60.0% 53650 0.000
 阶段 步骤范围 LR 含义 Warmup 0 → 7,500 0 → 3e-4（线性上升） 预热 Stable 7,500 → 60,000 3e-4（不变） 稳定高 LR 学习 Decay 60,000 → 75,000 3e-4 → 1.5e-5（inverse-sqrt） 衰减 53,500 步时我才刚走完 ~89% 的 stable 阶段。LR 要到 60,000 步才开始衰减。">
 	<meta itemprop="datePublished" content="2026-07-23T10:52:15+08:00">
 	<meta itemprop="dateModified" content="2026-07-23T10:52:15+08:00">
-	<meta itemprop="wordCount" content="652">
+	<meta itemprop="wordCount" content="734">
 	<meta name="twitter:card" content="summary">
 	<meta name="twitter:title" content="WSD 调度器：让学习率在最后才衰减的叛逆者">
 	<meta name="twitter:description" content="WSD 调度器：让学习率在最后才衰减的叛逆者 训练深度学习模型时，我们习惯用 Cosine 调度让学习率平滑下降。但 WSD（Warmup-Stable-Decay）却反其道而行之——它让 LR 几乎全程保持在巅峰值，只在最后 20% 的步数里陡峭衰减。为什么这样反而更好？
@@ -580,7 +580,35 @@ lr_lambda(n) =  ├ 1.0,                           if step &lt; decay_start
 </span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">-</span> scale <span style="color:#f92672">*</span> (<span style="color:#ae81ff">1.0</span> <span style="color:#f92672">-</span> raw)                 <span style="color:#75715e"># scaled inverse-sqrt</span>
 </span></span><span style="display:flex;"><span>
 </span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> LambdaLR(optimizer, lr_lambda<span style="color:#f92672">=</span>lr_lambda)</span></span></code></pre></div>
-  </div><ul class="pa0">
+  </div><h2 id="收尾阶段inverse-sqrt-存在的问题">收尾阶段Inverse-sqrt 存在的问题</h2>
+<p>默认的Inverse-sqrt 策略让学习率下降得太剧烈了。</p>
+<ul>
+<li>
+<p>Inverse-sqrt 的问题：99% 的衰减工作在前 100 步就完成了，后面 14,900 步的 LR 几乎等于最低值，浪费了算力。</p>
+</li>
+<li>
+<p>Cosine decay 的好处：LR 直到 5000 步才明显下降，有更多时间在较高 LR 下学习，而且全程平滑。</p>
+</li>
+<li>
+<p>Liner下降：匀速下降。</p>
+<div class="code-block">
+    <button class="code-copy" type="button" hidden aria-label="Copy code to clipboard">
+      <span class="code-copy-label" aria-hidden="true">Copy</span>
+    </button>
+    <pre tabindex="0"><code>Liner decay 阶段 15,000 步的 LR 变化：
+
+60000 (decay开始)  3.00e-04  ████████████████████████
+61000 (+1000步)    2.81e-04  ███████████████████████  降了 6%
+62000 (+2000步)    2.62e-04  ██████████████████████   降了 13%
+64000 (+4000步)    2.24e-04  ██████████████████       降了 25%
+65000 (+5000步)    2.05e-04  ████████████████         降了 32%
+67500 (+7500步)    1.57e-04  █████████████            降了 48%
+70000 (+10000步)   1.10e-04  █████████                降了 63%
+72500 (+12500步)   6.25e-05  █████                    降了 79%
+75000 (decay结束)  1.50e-05  █                        降了 95%</code></pre>
+  </div></li>
+</ul>
+<ul class="pa0">
   
 </ul><ul class="pa0">
   
