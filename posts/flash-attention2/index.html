@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Flash Attention2 快速安装 | 前海分享</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="前言
+直接使用 pip install flash-attn 经常会遇到各种各样的报错，不推荐把报错信息交给AI解决，因为它们往往会乱答给出不管用的 fix。我建议直接前往官方仓库下载适配的 wheel 文件并用其进行安装。访问官方仓库的 release 页面：https://github.com/Dao-AILab/flash-attention/releases ，可以看到许多批不同版本的 flash-attn ，再点开 Assets 就能看见该版本具体兼容的各个文件，我们需要选择一个适配的。
+一个典型的 flash-attn .whl 的文件名如 flash_attn-2.7.3&#43;cu11torch2.6cxx11abiFALSE-cp312-cp312-linux_x86_64.whl 记录了该 .whl 文件对应的安装环境， “flash_attn-2.7.3&#43;cu11torch2.6cxx11abiFALSE-cp312-cp312” 其中 标黑下划线 的各部分是我们要着重查明的。
+确定配置
+1. Python 版本
+在终端进入环境输入指令：
+
+    
+      Copy
+    
+    python --version
+  返回如：
+
+    
+      Copy
+    
+    Python 3.12.9
+  2. CUDA 版本
+输入指令：
+
+    
+      Copy
+    
+    nvcc -V
+  返回如：
+
+    
+      Copy
+    
+    nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2022 NVIDIA Corporation
+Built on Wed_Sep_21_10:33:58_PDT_2022
+Cuda compilation tools, release 11.8, V11.8.89
+Build cuda_11.8.r11.8/compiler.31833905_0
+  这里查询的是系统本地安装的 NVIDIA CUDA Toolkit 版本。可以看出此处 CUDA 版本为 11.8 ，对应 cu11 ；如果 CUDA 版本为 12.x 则对应 cu12 。">
+    <meta name="generator" content="Hugo 0.164.0">
+    
+    
+    
+      <meta name="robots" content="index, follow">
+    
+    
+
+    <link rel="stylesheet" href="/ananke/css/main.02a37ad6c4e155c542d276915a0e3f83f5c7c5fec443350f6e60753f1679b7a7.css" integrity="sha256-AqN61sThVcVC0naRWg4/g/XHxf7EQzUPbmB1PxZ5t6c=" crossorigin="anonymous">
+    <script>
+  (function () {
+    "use strict";
+
+    
+    
+    function revealButtons() {
+      var buttons = document.querySelectorAll(".code-block .code-copy[hidden]");
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].hidden = false;
+      }
+    }
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", revealButtons);
+    } else {
+      revealButtons();
+    }
+
+    function flash(button) {
+      var label = button.querySelector(".code-copy-label");
+      var previous = label ? label.textContent : null;
+      button.classList.add("is-copied");
+      if (label) label.textContent = "Copied";
+      window.setTimeout(function () {
+        button.classList.remove("is-copied");
+        if (label && previous !== null) label.textContent = previous;
+      }, 2000);
+    }
+
+    function legacyCopy(text) {
+      var area = document.createElement("textarea");
+      area.value = text;
+      area.setAttribute("readonly", "");
+      area.style.position = "absolute";
+      area.style.left = "-9999px";
+      document.body.appendChild(area);
+      area.select();
+      var ok = false;
+      try {
+        ok = document.execCommand("copy");
+      } catch (e) {
+        ok = false;
+      }
+      document.body.removeChild(area);
+      return ok;
+    }
+
+    function copyFrom(button) {
+      var container = button.closest(".code-block");
+      if (!container) return;
+      var pre = container.querySelector("pre");
+      if (!pre) return;
+      var source = pre.querySelector("code") || pre;
+      var text = source.innerText;
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(
+          function () { flash(button); },
+          function () { if (legacyCopy(text)) flash(button); }
+        );
+      } else if (legacyCopy(text)) {
+        flash(button);
+      }
+    }
+
+    document.addEventListener("click", function (event) {
+      var button = event.target.closest(".code-copy");
+      if (button) copyFrom(button);
+    });
+  })();
+</script>
+
+    
+      
+
+    
+
+    
+
+    
+      <link rel="canonical" href="https://example.org/posts/flash-attention2/">
+    
+
+    
+    
+    <meta property="og:url" content="https://example.org/posts/flash-attention2/">
+	<meta property="og:site_name" content="前海分享">
+	<meta property="og:title" content="Flash Attention2 快速安装">
+	<meta property="og:description" content="前言 直接使用 pip install flash-attn 经常会遇到各种各样的报错，不推荐把报错信息交给AI解决，因为它们往往会乱答给出不管用的 fix。我建议直接前往官方仓库下载适配的 wheel 文件并用其进行安装。访问官方仓库的 release 页面：https://github.com/Dao-AILab/flash-attention/releases ，可以看到许多批不同版本的 flash-attn ，再点开 Assets 就能看见该版本具体兼容的各个文件，我们需要选择一个适配的。
+一个典型的 flash-attn .whl 的文件名如 flash_attn-2.7.3&#43;cu11torch2.6cxx11abiFALSE-cp312-cp312-linux_x86_64.whl 记录了该 .whl 文件对应的安装环境， “flash_attn-2.7.3&#43;cu11torch2.6cxx11abiFALSE-cp312-cp312” 其中 标黑下划线 的各部分是我们要着重查明的。
+确定配置 1. Python 版本 在终端进入环境输入指令：
+Copypython --version返回如：
+CopyPython 3.12.92. CUDA 版本 输入指令：
+Copynvcc -V返回如：
+Copynvcc: NVIDIA (R) Cuda compiler driver Copyright (c) 2005-2022 NVIDIA Corporation Built on Wed_Sep_21_10:33:58_PDT_2022 Cuda compilation tools, release 11.8, V11.8.89 Build cuda_11.8.r11.8/compiler.31833905_0这里查询的是系统本地安装的 NVIDIA CUDA Toolkit 版本。可以看出此处 CUDA 版本为 11.8 ，对应 cu11 ；如果 CUDA 版本为 12.x 则对应 cu12 。">
+	<meta property="og:locale" content="en_us">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="posts">
+		<meta property="article:published_time" content="2026-07-18T21:52:15+08:00">
+		<meta property="article:modified_time" content="2026-07-18T21:52:15+08:00">
+
+	<meta itemprop="name" content="Flash Attention2 快速安装">
+	<meta itemprop="description" content="前言 直接使用 pip install flash-attn 经常会遇到各种各样的报错，不推荐把报错信息交给AI解决，因为它们往往会乱答给出不管用的 fix。我建议直接前往官方仓库下载适配的 wheel 文件并用其进行安装。访问官方仓库的 release 页面：https://github.com/Dao-AILab/flash-attention/releases ，可以看到许多批不同版本的 flash-attn ，再点开 Assets 就能看见该版本具体兼容的各个文件，我们需要选择一个适配的。
+一个典型的 flash-attn .whl 的文件名如 flash_attn-2.7.3&#43;cu11torch2.6cxx11abiFALSE-cp312-cp312-linux_x86_64.whl 记录了该 .whl 文件对应的安装环境， “flash_attn-2.7.3&#43;cu11torch2.6cxx11abiFALSE-cp312-cp312” 其中 标黑下划线 的各部分是我们要着重查明的。
+确定配置 1. Python 版本 在终端进入环境输入指令：
+Copypython --version返回如：
+CopyPython 3.12.92. CUDA 版本 输入指令：
+Copynvcc -V返回如：
+Copynvcc: NVIDIA (R) Cuda compiler driver Copyright (c) 2005-2022 NVIDIA Corporation Built on Wed_Sep_21_10:33:58_PDT_2022 Cuda compilation tools, release 11.8, V11.8.89 Build cuda_11.8.r11.8/compiler.31833905_0这里查询的是系统本地安装的 NVIDIA CUDA Toolkit 版本。可以看出此处 CUDA 版本为 11.8 ，对应 cu11 ；如果 CUDA 版本为 12.x 则对应 cu12 。">
+	<meta itemprop="datePublished" content="2026-07-18T21:52:15+08:00">
+	<meta itemprop="dateModified" content="2026-07-18T21:52:15+08:00">
+	<meta itemprop="wordCount" content="136">
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="Flash Attention2 快速安装">
+	<meta name="twitter:description" content="前言 直接使用 pip install flash-attn 经常会遇到各种各样的报错，不推荐把报错信息交给AI解决，因为它们往往会乱答给出不管用的 fix。我建议直接前往官方仓库下载适配的 wheel 文件并用其进行安装。访问官方仓库的 release 页面：https://github.com/Dao-AILab/flash-attention/releases ，可以看到许多批不同版本的 flash-attn ，再点开 Assets 就能看见该版本具体兼容的各个文件，我们需要选择一个适配的。
+一个典型的 flash-attn .whl 的文件名如 flash_attn-2.7.3&#43;cu11torch2.6cxx11abiFALSE-cp312-cp312-linux_x86_64.whl 记录了该 .whl 文件对应的安装环境， “flash_attn-2.7.3&#43;cu11torch2.6cxx11abiFALSE-cp312-cp312” 其中 标黑下划线 的各部分是我们要着重查明的。
+确定配置 1. Python 版本 在终端进入环境输入指令：
+Copypython --version返回如：
+CopyPython 3.12.92. CUDA 版本 输入指令：
+Copynvcc -V返回如：
+Copynvcc: NVIDIA (R) Cuda compiler driver Copyright (c) 2005-2022 NVIDIA Corporation Built on Wed_Sep_21_10:33:58_PDT_2022 Cuda compilation tools, release 11.8, V11.8.89 Build cuda_11.8.r11.8/compiler.31833905_0这里查询的是系统本地安装的 NVIDIA CUDA Toolkit 版本。可以看出此处 CUDA 版本为 11.8 ，对应 cu11 ；如果 CUDA 版本为 12.x 则对应 cu12 。">
+
+      
+      
+    
+	<meta name="referrer" content="never">
+  </head><body class="ma0 avenir bg-light-gray production is-page is-page page-flash-attention2">
+   
+  
+
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l center items-center justify-between">
+    <a href="/" class="f3 fw2 hover-white white-90 dib no-underline">
+      
+        前海分享
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/environmentconfig/" title="环境配置 page">
+              环境配置
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/search/" title="搜索 page">
+              搜索
+            </a>
+          </li>
+          
+        </ul>
+      
+      <div class="ananke-socials"></div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+<main class="pb7" role="main">
+  
+
+  <article class="page-flash-attention2 flex-l bg-white pa3 pa4-l br2 shadow-1 center ph3 ph4-l flex-wrap justify-between" style="max-width: 75vw;">
+    <header class="mt4 w-100"><aside class="instapaper_ignoref b helvetica tracked ttu">
+    <a class="link dim" href="https://example.org/posts/">Posts</a>
+  </aside><div id="sharing" class="mt3 ananke-socials"></div>
+<h1 class="f1 athelas mt3 mb1">Flash Attention2 快速安装</h1>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2026-07-18T21:52:15+08:00">July 18, 2026</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f5 nested-links mid-gray pr4-l w-two-thirds-l"><h2 id="前言">前言</h2>
+<p>直接使用 <code>pip install flash-attn</code> 经常会遇到各种各样的报错，不推荐把报错信息交给AI解决，因为它们往往会乱答给出不管用的 fix。我建议直接前往官方仓库下载适配的 wheel 文件并用其进行安装。访问官方仓库的 release 页面：<a href="https://link.zhihu.com/?target=https%3A//github.com/Dao-AILab/flash-attention/releases">https://github.com/Dao-AILab/flash-attention/releases</a> ，可以看到许多批不同版本的 <a href="https://zhida.zhihu.com/search?content_id=268997872&amp;content_type=Article&amp;match_order=2&amp;q=flash-attn&amp;zd_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ6aGlkYV9zZXJ2ZXIiLCJleHAiOjE3ODQ1NTQ1MjgsInEiOiJmbGFzaC1hdHRuIiwiemhpZGFfc291cmNlIjoiZW50aXR5IiwiY29udGVudF9pZCI6MjY4OTk3ODcyLCJjb250ZW50X3R5cGUiOiJBcnRpY2xlIiwibWF0Y2hfb3JkZXIiOjIsInpkX3Rva2VuIjpudWxsfQ.jNTb2B4uAgwt8X24HEO0T1fvfTxV3-rPaNbu4sx5dwg&amp;zhida_source=entity">flash-attn</a> ，再点开 Assets 就能看见该版本具体兼容的各个文件，我们需要选择一个适配的。</p>
+<p>一个典型的 flash-attn <code>.whl</code> 的文件名如 <code>flash_attn-2.7.3+cu11torch2.6cxx11abiFALSE-cp312-cp312-linux_x86_64.whl</code> 记录了该 <code>.whl</code> 文件对应的安装环境， “flash_attn-<strong>2.7.3</strong>+cu<strong>11</strong>torch<strong>2.6</strong>cxx11abi<strong>FALSE</strong>-cp<strong>312</strong>-cp<strong>312</strong>” 其中 <strong>标黑下划线</strong> 的各部分是我们要着重查明的。</p>
+<h2 id="确定配置">确定配置</h2>
+<h3 id="1-python-版本">1. Python 版本</h3>
+<p>在终端进入环境输入指令：</p>
+<div class="code-block">
+    <button class="code-copy" type="button" hidden aria-label="Copy code to clipboard">
+      <span class="code-copy-label" aria-hidden="true">Copy</span>
+    </button>
+    <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>python --version</span></span></code></pre></div>
+  </div><p>返回如：</p>
+<div class="code-block">
+    <button class="code-copy" type="button" hidden aria-label="Copy code to clipboard">
+      <span class="code-copy-label" aria-hidden="true">Copy</span>
+    </button>
+    <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>Python 3.12.9</span></span></code></pre></div>
+  </div><h3 id="2-cuda-版本">2. CUDA 版本</h3>
+<p>输入指令：</p>
+<div class="code-block">
+    <button class="code-copy" type="button" hidden aria-label="Copy code to clipboard">
+      <span class="code-copy-label" aria-hidden="true">Copy</span>
+    </button>
+    <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>nvcc -V</span></span></code></pre></div>
+  </div><p>返回如：</p>
+<div class="code-block">
+    <button class="code-copy" type="button" hidden aria-label="Copy code to clipboard">
+      <span class="code-copy-label" aria-hidden="true">Copy</span>
+    </button>
+    <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>nvcc: NVIDIA (R) Cuda compiler driver
+</span></span><span style="display:flex;"><span>Copyright (c) 2005-2022 NVIDIA Corporation
+</span></span><span style="display:flex;"><span>Built on Wed_Sep_21_10:33:58_PDT_2022
+</span></span><span style="display:flex;"><span>Cuda compilation tools, release 11.8, V11.8.89
+</span></span><span style="display:flex;"><span>Build cuda_11.8.r11.8/compiler.31833905_0</span></span></code></pre></div>
+  </div><p>这里查询的是<strong>系统本地</strong>安装的 <strong>NVIDIA <a href="https://zhida.zhihu.com/search?content_id=268997872&amp;content_type=Article&amp;match_order=1&amp;q=CUDA+Toolkit&amp;zd_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ6aGlkYV9zZXJ2ZXIiLCJleHAiOjE3ODQ1NTQ1MjgsInEiOiJDVURBIFRvb2xraXQiLCJ6aGlkYV9zb3VyY2UiOiJlbnRpdHkiLCJjb250ZW50X2lkIjoyNjg5OTc4NzIsImNvbnRlbnRfdHlwZSI6IkFydGljbGUiLCJtYXRjaF9vcmRlciI6MSwiemRfdG9rZW4iOm51bGx9.QuaBnGH2aw1M07mVeb0-MgfmcyNAr0Og1LI2RTCTaKQ&amp;zhida_source=entity">CUDA Toolkit</a></strong> 版本。可以看出此处 CUDA 版本为 11.8 ，对应 cu<strong>11</strong> ；如果 CUDA 版本为 12.x 则对应 cu<strong>12</strong> 。</p>
+<h3 id="3-pytorch-版本">3. <a href="https://zhida.zhihu.com/search?content_id=268997872&amp;content_type=Article&amp;match_order=1&amp;q=PyTorch&amp;zd_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ6aGlkYV9zZXJ2ZXIiLCJleHAiOjE3ODQ1NTQ1MjgsInEiOiJQeVRvcmNoIiwiemhpZGFfc291cmNlIjoiZW50aXR5IiwiY29udGVudF9pZCI6MjY4OTk3ODcyLCJjb250ZW50X3R5cGUiOiJBcnRpY2xlIiwibWF0Y2hfb3JkZXIiOjEsInpkX3Rva2VuIjpudWxsfQ.74mY9bxoJ948H2axQi0SQnDdWkMSGSL8byoyr6-XuQI&amp;zhida_source=entity">PyTorch</a> 版本</h3>
+<p>输入指令：</p>
+<div class="code-block">
+    <button class="code-copy" type="button" hidden aria-label="Copy code to clipboard">
+      <span class="code-copy-label" aria-hidden="true">Copy</span>
+    </button>
+    <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>python -c &#34;import torch; print(torch.__version__);&#34;</span></span></code></pre></div>
+  </div><p>返回如：</p>
+<div class="code-block">
+    <button class="code-copy" type="button" hidden aria-label="Copy code to clipboard">
+      <span class="code-copy-label" aria-hidden="true">Copy</span>
+    </button>
+    <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-text" data-lang="text"><span style="display:flex;"><span>2.6.0+cu124</span></span></code></pre></div>
+  </div><p>前面是 <a href="https://zhida.zhihu.com/search?content_id=268997872&amp;content_type=Article&amp;match_order=1&amp;q=pytorch&amp;zd_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ6aGlkYV9zZXJ2ZXIiLCJleHAiOjE3ODQ1NTQ1MjgsInEiOiJweXRvcmNoIiwiemhpZGFfc291cmNlIjoiZW50aXR5IiwiY29udGVudF9pZCI6MjY4OTk3ODcyLCJjb250ZW50X3R5cGUiOiJBcnRpY2xlIiwibWF0Y2hfb3JkZXIiOjEsInpkX3Rva2VuIjpudWxsfQ.4xGQqsGmSZaJffbqgWcyTBWZJHklsgu5XfIa5guYsr0&amp;zhida_source=entity">pytorch</a> 版本，对应 torch<strong>2.6</strong> ；</p>
+<p>后面 cu124 是 PyTorch <strong>运行时需要</strong>的 CUDA 版本，我们不关心。这里可能与你前面查询到的本地 CUDA 版本不一致，不一定影响使用，先往后看，你不放心可以重装符合本地 CUDA 版本的 torch 全家桶。</p>
+<h3 id="4-flash-attention-版本">4. Flash Attention 版本</h3>
+<p>这是我们要选择去装的 flash-attn 版本，通常会在你要配置的模型的 <code>requirements.txt</code> 中标出来，如 <code>flash-attn==2.7.3</code> 等等，对应 flash_attn-<strong>2.7.3</strong> ，更高版本的也能选，更低版本的也许也能用。如果没有标明，自行翻阅各版本，选择出能符合前面三项配置的。<code>.post1</code> 之类代表这是修订版。</p>
+<h2 id="搬运说明">搬运说明</h2>
+<p>搬运自 <a href="https://zhuanlan.zhihu.com/p/1994754750374244794">https://zhuanlan.zhihu.com/p/1994754750374244794</a></p>
+<ul class="pa0">
+  
+</ul><ul class="pa0">
+  
+</ul>
+
+      
+    </div><aside class="w-30-l mt6-l">
+
+
+
+
+</aside></article>
+</main><footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white white-70 dn dib-ns pv2 ph3 no-underline" href="https://example.org/" >
+    &copy;  前海分享 2026 
+  </a>
+    <div><div class="ananke-socials"></div>
+</div>
+  </div>
+</footer>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

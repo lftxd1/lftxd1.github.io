@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <title>Mamba SSM环境配置 | 前海分享</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1">
+    <meta name="description" content="前言
+Mamba-SSM还需要安装Causal_conv
+只能通过在GitHub上下载whl文件来进行安装。
+实际配置
+即便下载了符合cuda和torch版本的mamba-ssm，依旧是失败。
+唯一成功的方案是如下配置：
+
+    
+      Copy
+    
+    9527MY on Apr 3
+i solve this problem.我解决了这个问题。
+at cuda 12.4在cuda 12.4
+pytorch 2.4
+python 3.11
+iintalled that我安装了那个
+mamba_ssm-2.2.2&#43;cu122torch2.4cxx11abiFALSE-cp311-cp311-linux_x86_64.whl
+causal_conv1d-1.4.0&#43;cu122torch2.4cxx11abiFALSE-cp311-cp311-linux_x86_64.whl
+you can find at
+你可以在
+https://github.com/Dao-AlLab/causal-conv1d/releases/tag/v1.4.0https://github.com/state-spaces/mamba/releases/tag/v2.2.2L1
+  ">
+    <meta name="generator" content="Hugo 0.164.0">
+    
+    
+    
+      <meta name="robots" content="index, follow">
+    
+    
+
+    <link rel="stylesheet" href="/ananke/css/main.02a37ad6c4e155c542d276915a0e3f83f5c7c5fec443350f6e60753f1679b7a7.css" integrity="sha256-AqN61sThVcVC0naRWg4/g/XHxf7EQzUPbmB1PxZ5t6c=" crossorigin="anonymous">
+    <script>
+  (function () {
+    "use strict";
+
+    
+    
+    function revealButtons() {
+      var buttons = document.querySelectorAll(".code-block .code-copy[hidden]");
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].hidden = false;
+      }
+    }
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", revealButtons);
+    } else {
+      revealButtons();
+    }
+
+    function flash(button) {
+      var label = button.querySelector(".code-copy-label");
+      var previous = label ? label.textContent : null;
+      button.classList.add("is-copied");
+      if (label) label.textContent = "Copied";
+      window.setTimeout(function () {
+        button.classList.remove("is-copied");
+        if (label && previous !== null) label.textContent = previous;
+      }, 2000);
+    }
+
+    function legacyCopy(text) {
+      var area = document.createElement("textarea");
+      area.value = text;
+      area.setAttribute("readonly", "");
+      area.style.position = "absolute";
+      area.style.left = "-9999px";
+      document.body.appendChild(area);
+      area.select();
+      var ok = false;
+      try {
+        ok = document.execCommand("copy");
+      } catch (e) {
+        ok = false;
+      }
+      document.body.removeChild(area);
+      return ok;
+    }
+
+    function copyFrom(button) {
+      var container = button.closest(".code-block");
+      if (!container) return;
+      var pre = container.querySelector("pre");
+      if (!pre) return;
+      var source = pre.querySelector("code") || pre;
+      var text = source.innerText;
+
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(
+          function () { flash(button); },
+          function () { if (legacyCopy(text)) flash(button); }
+        );
+      } else if (legacyCopy(text)) {
+        flash(button);
+      }
+    }
+
+    document.addEventListener("click", function (event) {
+      var button = event.target.closest(".code-copy");
+      if (button) copyFrom(button);
+    });
+  })();
+</script>
+
+    
+      
+
+    
+
+    
+
+    
+      <link rel="canonical" href="https://example.org/environmentconfig/mamba-ssm%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">
+    
+
+    
+    
+    <meta property="og:url" content="https://example.org/environmentconfig/mamba-ssm%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">
+	<meta property="og:site_name" content="前海分享">
+	<meta property="og:title" content="Mamba SSM环境配置">
+	<meta property="og:description" content="前言 Mamba-SSM还需要安装Causal_conv
+只能通过在GitHub上下载whl文件来进行安装。
+实际配置 即便下载了符合cuda和torch版本的mamba-ssm，依旧是失败。
+唯一成功的方案是如下配置：
+Copy9527MY on Apr 3i solve this problem.我解决了这个问题。at cuda 12.4在cuda 12.4pytorch 2.4python 3.11iintalled that我安装了那个mamba_ssm-2.2.2&#43;cu122torch2.4cxx11abiFALSE-cp311-cp311-linux_x86_64.whlcausal_conv1d-1.4.0&#43;cu122torch2.4cxx11abiFALSE-cp311-cp311-linux_x86_64.whlyou can find at你可以在https://github.com/Dao-AlLab/causal-conv1d/releases/tag/v1.4.0https://github.com/state-spaces/mamba/releases/tag/v2.2.2L1">
+	<meta property="og:locale" content="en_us">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="environmentconfig">
+		<meta property="article:published_time" content="2026-07-19T14:48:46+08:00">
+		<meta property="article:modified_time" content="2026-07-19T14:48:46+08:00">
+
+	<meta itemprop="name" content="Mamba SSM环境配置">
+	<meta itemprop="description" content="前言 Mamba-SSM还需要安装Causal_conv
+只能通过在GitHub上下载whl文件来进行安装。
+实际配置 即便下载了符合cuda和torch版本的mamba-ssm，依旧是失败。
+唯一成功的方案是如下配置：
+Copy9527MY on Apr 3i solve this problem.我解决了这个问题。at cuda 12.4在cuda 12.4pytorch 2.4python 3.11iintalled that我安装了那个mamba_ssm-2.2.2&#43;cu122torch2.4cxx11abiFALSE-cp311-cp311-linux_x86_64.whlcausal_conv1d-1.4.0&#43;cu122torch2.4cxx11abiFALSE-cp311-cp311-linux_x86_64.whlyou can find at你可以在https://github.com/Dao-AlLab/causal-conv1d/releases/tag/v1.4.0https://github.com/state-spaces/mamba/releases/tag/v2.2.2L1">
+	<meta itemprop="datePublished" content="2026-07-19T14:48:46+08:00">
+	<meta itemprop="dateModified" content="2026-07-19T14:48:46+08:00">
+	<meta itemprop="wordCount" content="33">
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="Mamba SSM环境配置">
+	<meta name="twitter:description" content="前言 Mamba-SSM还需要安装Causal_conv
+只能通过在GitHub上下载whl文件来进行安装。
+实际配置 即便下载了符合cuda和torch版本的mamba-ssm，依旧是失败。
+唯一成功的方案是如下配置：
+Copy9527MY on Apr 3i solve this problem.我解决了这个问题。at cuda 12.4在cuda 12.4pytorch 2.4python 3.11iintalled that我安装了那个mamba_ssm-2.2.2&#43;cu122torch2.4cxx11abiFALSE-cp311-cp311-linux_x86_64.whlcausal_conv1d-1.4.0&#43;cu122torch2.4cxx11abiFALSE-cp311-cp311-linux_x86_64.whlyou can find at你可以在https://github.com/Dao-AlLab/causal-conv1d/releases/tag/v1.4.0https://github.com/state-spaces/mamba/releases/tag/v2.2.2L1">
+
+      
+      
+    
+	<meta name="referrer" content="never">
+  </head><body class="ma0 avenir bg-light-gray production is-page is-page page-Mamba-SSM环境配置">
+   
+  
+
+
+  <header>
+    <div class="bg-black">
+      <nav class="pv3 ph3 ph4-ns" role="navigation">
+  <div class="flex-l center items-center justify-between">
+    <a href="/" class="f3 fw2 hover-white white-90 dib no-underline">
+      
+        前海分享
+      
+    </a>
+    <div class="flex-l items-center">
+      
+
+      
+        <ul class="pl0 mr3">
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/environmentconfig/" title="环境配置 page">
+              环境配置
+            </a>
+          </li>
+          
+          <li class="list f5 f4-ns fw4 dib pr3">
+            <a class="hover-white white-90 no-underline" href="/search/" title="搜索 page">
+              搜索
+            </a>
+          </li>
+          
+        </ul>
+      
+      <div class="ananke-socials"></div>
+
+    </div>
+  </div>
+</nav>
+
+    </div>
+  </header>
+
+
+<main class="pb7" role="main">
+  
+
+  <article class="page-Mamba-SSM环境配置 flex-l bg-white pa3 pa4-l br2 shadow-1 center ph3 ph4-l flex-wrap justify-between" style="max-width: 75vw;">
+    <header class="mt4 w-100"><aside class="instapaper_ignoref b helvetica tracked ttu">
+    <a class="link dim" href="https://example.org/environmentconfig/">环境配置</a>
+  </aside><div id="sharing" class="mt3 ananke-socials"></div>
+<h1 class="f1 athelas mt3 mb1">Mamba SSM环境配置</h1>
+      
+      
+      
+      <time class="f6 mv4 dib tracked" datetime="2026-07-19T14:48:46+08:00">July 19, 2026</time>
+      
+
+      
+      
+    </header>
+    <div class="nested-copy-line-height lh-copy serif f5 nested-links mid-gray pr4-l w-two-thirds-l"><h2 id="前言">前言</h2>
+<p>Mamba-SSM还需要安装Causal_conv</p>
+<p>只能通过在GitHub上下载whl文件来进行安装。</p>
+<h2 id="实际配置">实际配置</h2>
+<p>即便下载了符合cuda和torch版本的mamba-ssm，依旧是失败。</p>
+<p><strong>唯一成功的方案是如下配置：</strong></p>
+<div class="code-block">
+    <button class="code-copy" type="button" hidden aria-label="Copy code to clipboard">
+      <span class="code-copy-label" aria-hidden="true">Copy</span>
+    </button>
+    <pre tabindex="0"><code>9527MY on Apr 3
+i solve this problem.我解决了这个问题。
+at cuda 12.4在cuda 12.4
+pytorch 2.4
+python 3.11
+iintalled that我安装了那个
+mamba_ssm-2.2.2+cu122torch2.4cxx11abiFALSE-cp311-cp311-linux_x86_64.whl
+causal_conv1d-1.4.0+cu122torch2.4cxx11abiFALSE-cp311-cp311-linux_x86_64.whl
+you can find at
+你可以在
+https://github.com/Dao-AlLab/causal-conv1d/releases/tag/v1.4.0https://github.com/state-spaces/mamba/releases/tag/v2.2.2L1</code></pre>
+  </div><ul class="pa0">
+  
+</ul><ul class="pa0">
+  
+</ul>
+
+      
+    </div><aside class="w-30-l mt6-l">
+
+
+
+
+</aside></article>
+</main><footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
+  <div class="flex justify-between">
+  <a class="f4 fw4 hover-white white-70 dn dib-ns pv2 ph3 no-underline" href="https://example.org/" >
+    &copy;  前海分享 2026 
+  </a>
+    <div><div class="ananke-socials"></div>
+</div>
+  </div>
+</footer>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
