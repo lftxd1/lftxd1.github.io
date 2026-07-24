@@ -1,0 +1,17 @@
+{
+  "name": "my-first-blog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "hugo && pagefind --site public",
+    "dev": "hugo server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "pagefind": "^1.5.2"
+  }
+}

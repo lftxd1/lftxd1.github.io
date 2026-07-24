@@ -1,0 +1,21 @@
+# Hugo build output
+public/
+.hugo_build.lock
+resources/
+
+# Node dependencies (ananke theme uses npm for some assets)
+node_modules/
+package-lock.json
+
+# Claude Code session data
+.claude/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
+
+# Local Hugo config overrides
+hugo.local.toml

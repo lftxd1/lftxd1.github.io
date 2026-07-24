@@ -1,0 +1,18 @@
+baseURL = 'https://example.org/'
+locale = 'en-us'
+title = '前海分享'
+theme = 'ananke'
+mainSections = ['posts', 'environmentconfig']
+
+[params]
+body_classes = 'avenir bg-light-gray'
+
+[[menu.main]]
+name = '环境配置'
+url = '/environmentconfig/'
+weight = 50
+
+[[menu.main]]
+name = '搜索'
+url = '/search/'
+weight = 99

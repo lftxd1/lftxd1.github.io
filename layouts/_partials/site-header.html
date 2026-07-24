@@ -1,0 +1,12 @@
+{{ $featured_image := partials.Include "func/GetFeaturedImage.html" . }}
+{{ if $featured_image }}
+  <header class="{{ site.Params.featured_image_class | compare.Default "cover bg-top" }}" style="background-image: url('{{ $featured_image }}');">
+    <div class="{{ site.Params.cover_dimming_class | compare.Default "bg-black-60" }}">
+      {{ partials.Include "site-navigation.html" . }}
+    </div>
+  </header>
+{{ else }}
+  <header class="{{ .Site.Params.background_color_class | compare.Default "bg-black" }}">
+    {{ partials.Include "site-navigation.html" . }}
+  </header>
+{{ end }}

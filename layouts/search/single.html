@@ -1,0 +1,10 @@
+{{ define "main" }}
+<article class="center pa3 pa4-ns mw7">
+  <header class="mb4">
+    <h1 class="f1">{{ .Title }}</h1>
+  </header>
+  <section class="nested-copy-line-height lh-copy f4 nested-links">
+    {{ partial "site-search.html" . }}
+  </section>
+</article>
+{{ end }}
