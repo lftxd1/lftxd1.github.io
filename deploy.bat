@@ -39,7 +39,7 @@ if not errorlevel 1 goto :skip_source
 set /p MSG="Source changed - enter commit message (default: Update blog): "
 if "%MSG%"=="" set MSG=Update blog
 git commit -m "%MSG%"
-git push origin master:%SOURCE_BRANCH%
+git push origin %SOURCE_BRANCH%:%SOURCE_BRANCH%
 if errorlevel 1 goto :fail
 
 :skip_source
