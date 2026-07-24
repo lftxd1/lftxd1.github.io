@@ -266,7 +266,7 @@ step lr loss acc 53500 0.0003 0.9219 59.6% 53600 0.0003 0.9198 60.0% 53650 0.000
       
       
     </header>
-    <div class="nested-copy-line-height lh-copy serif f5 nested-links mid-gray pr4-l w-100-l"><h1 id="wsd-调度器让学习率在最后才衰减的叛逆者">WSD 调度器：让学习率在最后才衰减的叛逆者</h1>
+    <div class="nested-copy-line-height lh-copy serif f5 nested-links mid-gray pr4-l w-two-thirds-l"><h1 id="wsd-调度器让学习率在最后才衰减的叛逆者">WSD 调度器：让学习率在最后才衰减的叛逆者</h1>
 <blockquote>
 <p>训练深度学习模型时，我们习惯用 Cosine 调度让学习率平滑下降。但 WSD（Warmup-Stable-Decay）却反其道而行之——它让 LR 几乎全程保持在巅峰值，只在最后 20% 的步数里陡峭衰减。为什么这样反而更好？</p>
 </blockquote>
@@ -615,7 +615,12 @@ lr_lambda(n) =  ├ 1.0,                           if step &lt; decay_start
 </ul>
 
       
-    </div></article>
+    </div><aside class="w-30-l mt6-l">
+
+
+
+
+</aside></article>
 </main><footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white white-70 dn dib-ns pv2 ph3 no-underline" href="https://example.org/" >

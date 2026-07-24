@@ -237,7 +237,7 @@ Copynvcc: NVIDIA (R) Cuda compiler driver Copyright (c) 2005-2022 NVIDIA Corpor
       
       
     </header>
-    <div class="nested-copy-line-height lh-copy serif f5 nested-links mid-gray pr4-l w-100-l"><h2 id="前言">前言</h2>
+    <div class="nested-copy-line-height lh-copy serif f5 nested-links mid-gray pr4-l w-two-thirds-l"><h2 id="前言">前言</h2>
 <p>直接使用 <code>pip install flash-attn</code> 经常会遇到各种各样的报错，不推荐把报错信息交给AI解决，因为它们往往会乱答给出不管用的 fix。我建议直接前往官方仓库下载适配的 wheel 文件并用其进行安装。访问官方仓库的 release 页面：<a href="https://link.zhihu.com/?target=https%3A//github.com/Dao-AILab/flash-attention/releases">https://github.com/Dao-AILab/flash-attention/releases</a> ，可以看到许多批不同版本的 <a href="https://zhida.zhihu.com/search?content_id=268997872&amp;content_type=Article&amp;match_order=2&amp;q=flash-attn&amp;zd_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ6aGlkYV9zZXJ2ZXIiLCJleHAiOjE3ODQ1NTQ1MjgsInEiOiJmbGFzaC1hdHRuIiwiemhpZGFfc291cmNlIjoiZW50aXR5IiwiY29udGVudF9pZCI6MjY4OTk3ODcyLCJjb250ZW50X3R5cGUiOiJBcnRpY2xlIiwibWF0Y2hfb3JkZXIiOjIsInpkX3Rva2VuIjpudWxsfQ.jNTb2B4uAgwt8X24HEO0T1fvfTxV3-rPaNbu4sx5dwg&amp;zhida_source=entity">flash-attn</a> ，再点开 Assets 就能看见该版本具体兼容的各个文件，我们需要选择一个适配的。</p>
 <p>一个典型的 flash-attn <code>.whl</code> 的文件名如 <code>flash_attn-2.7.3+cu11torch2.6cxx11abiFALSE-cp312-cp312-linux_x86_64.whl</code> 记录了该 <code>.whl</code> 文件对应的安装环境， “flash_attn-<strong>2.7.3</strong>+cu<strong>11</strong>torch<strong>2.6</strong>cxx11abi<strong>FALSE</strong>-cp<strong>312</strong>-cp<strong>312</strong>” 其中 <strong>标黑下划线</strong> 的各部分是我们要着重查明的。</p>
 <h2 id="确定配置">确定配置</h2>
@@ -298,7 +298,12 @@ Copynvcc: NVIDIA (R) Cuda compiler driver Copyright (c) 2005-2022 NVIDIA Corpor
 </ul>
 
       
-    </div></article>
+    </div><aside class="w-30-l mt6-l">
+
+
+
+
+</aside></article>
 </main><footer class="bg-black bottom-0 w-100 pa3" role="contentinfo">
   <div class="flex justify-between">
   <a class="f4 fw4 hover-white white-70 dn dib-ns pv2 ph3 no-underline" href="https://example.org/" >
